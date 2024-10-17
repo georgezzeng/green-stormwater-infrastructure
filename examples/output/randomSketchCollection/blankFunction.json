@@ -1,0 +1,223 @@
+{
+  "metrics": [],
+  "sketch": {
+    "properties": {
+      "id": "d66e979e-d82f-4fda-8eb4-d9e48f9fce6c",
+      "isCollection": true,
+      "userAttributes": [],
+      "sketchClassId": "908c02ba-2af0-4e16-b632-d01859d6921d",
+      "createdAt": "2024-10-17T21:39:59.061Z",
+      "updatedAt": "2024-10-17T21:39:59.061Z",
+      "name": "randomSketchCollection"
+    },
+    "bbox": [
+      -73.73810040059539,
+      33.67894318187009,
+      -72.92078019863914,
+      34.055838199556916
+    ],
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "d5f3583f-ed38-4f7e-b4da-13e19b36a98e",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "0c9c1a4c-4b9f-43be-bafa-eccb25a4929b",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-1"
+        },
+        "id": "d5f3583f-ed38-4f7e-b4da-13e19b36a98e",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "c4be830b-d623-4f4e-bd90-1ca5bced1c18",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "882e9b72-6b25-4dab-ae2d-d39047f14eed",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-1"
+        },
+        "id": "c4be830b-d623-4f4e-bd90-1ca5bced1c18",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "4d1333c9-1bdd-42eb-a813-3a9132f28650",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "a45b6471-d22e-4510-ae0d-9eb26bfbd47f",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-2"
+        },
+        "id": "4d1333c9-1bdd-42eb-a813-3a9132f28650",
+        "bbox": [
+          -73.73810040059539,
+          33.67894318187009,
+          -72.92078019863914,
+          34.055838199556916
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "3ddddc20-5783-4e60-83fb-a7f5767ed86f",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "d5ddbf7a-af90-4f62-8c12-70c321594400",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-3"
+        },
+        "id": "3ddddc20-5783-4e60-83fb-a7f5767ed86f",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "2b9488e7-241f-4f2b-9e9f-7da5bf89f097",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "db59ec6b-afb8-481a-809c-b1ddf0555503",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-4"
+        },
+        "id": "2b9488e7-241f-4f2b-9e9f-7da5bf89f097",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "ef8c3eb6-aa07-424f-8a98-cc5cff14e08e",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "bfe36e95-1d54-4357-81d5-f90887f73e65",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-5"
+        },
+        "id": "ef8c3eb6-aa07-424f-8a98-cc5cff14e08e",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "c296111f-7279-4a33-a084-8bb6f44643bb",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "a10ad050-a3f5-4a45-bd13-ea9cb3d69b62",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-6"
+        },
+        "id": "c296111f-7279-4a33-a084-8bb6f44643bb",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "5053eb02-e275-433e-bb79-1ef2d2b2470f",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "6b4260cb-45b0-4160-b183-9a47c84303bd",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-7"
+        },
+        "id": "5053eb02-e275-433e-bb79-1ef2d2b2470f",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "b2a007d1-3c7b-4106-9b12-7be19bedfdf6",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "adec0e97-4977-43e8-8082-c6d1fa3b983a",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-8"
+        },
+        "id": "b2a007d1-3c7b-4106-9b12-7be19bedfdf6",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "b36d636e-4c3f-4352-a3f3-c41a6a1afd23",
+          "isCollection": false,
+          "userAttributes": [],
+          "sketchClassId": "30e86fe5-0398-4ca2-9f62-620199488bd9",
+          "createdAt": "2024-10-17T21:39:59.060Z",
+          "updatedAt": "2024-10-17T21:39:59.060Z",
+          "name": "randomSketchCollection-9"
+        },
+        "id": "b36d636e-4c3f-4352-a3f3-c41a6a1afd23",
+        "bbox": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "geometry": null
+      }
+    ]
+  }
+}

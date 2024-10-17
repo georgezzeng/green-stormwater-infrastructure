@@ -41,8 +41,6 @@
     },
     "idProperty": "GEONAME",
     "nameProperty": "GEONAME",
-    "classKeys": [],
-    "url": "https://gp-global-datasources-datasets.s3.us-west-1.amazonaws.com/global-eez-mr-v12.fgb",
     "propertyFilter": {
       "property": "GEONAME",
       "values": [
@@ -54,7 +52,9 @@
       23.833333333167218,
       -65.69971857933155,
       49.00226354612636
-    ]
+    ],
+    "classKeys": [],
+    "url": "https://gp-global-datasources-datasets.s3.us-west-1.amazonaws.com/global-eez-mr-v12.fgb"
   },
   {
     "datasourceId": "world",
@@ -158,5 +158,20 @@
     "layerName": "meow_ecos",
     "classKeys": [],
     "url": "https://gp-global-datasources-datasets.s3.us-west-1.amazonaws.com/meow-ecos.fgb"
+  },
+  {
+    "src": "/workspaces/green-stormwater-infrastructure/data/src/reefextent.gpkg",
+    "layerName": "United States Exclusive Economic Zone",
+    "geo_type": "vector",
+    "datasourceId": "reefextent",
+    "formats": [
+      "fgb"
+    ],
+    "classKeys": [],
+    "created": "2024-10-17T21:49:45.360Z",
+    "lastUpdated": "2024-10-17T21:49:45.360Z",
+    "propertiesToKeep": [],
+    "explodeMulti": true,
+    "precalc": true
   }
 ]

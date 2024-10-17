@@ -20,6 +20,7 @@
   ],
   "geoprocessingFunctions": [
     "src/functions/simpleFunction.ts",
-    "src/functions/blankFunction.ts"
+    "src/functions/blankFunction.ts",
+    "src/functions/boundaryAreaOverlap.ts"
   ]
 }

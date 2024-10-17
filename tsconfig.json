@@ -5,6 +5,8 @@
     "jsx": "react" /* Specify JSX code generation */,
     "strict": true /* Enable all strict type-checking options. */,
     "moduleResolution": "nodenext" /* Specify module resolution strategy */,
+    "allowImportingTsExtensions": true, // Required for allowing .ts/.tsx imports 
+    "noEmit": true, // Disable emitting output
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@seasketch/geoprocessing/node_modules/@types"

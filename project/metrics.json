@@ -11,5 +11,17 @@
         "layerId": ""
       }
     ]
+  },
+  {
+    "metricId": "coralReef",
+    "type": "areaOverlap",
+    "classes": [
+      {
+        "classId": "reefextent",
+        "display": "Coral Reef",
+        "datasourceId": "reefextent"
+      }
+    ]
   }
 ]
+
