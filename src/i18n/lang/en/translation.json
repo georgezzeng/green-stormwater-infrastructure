@@ -1,0 +1,10 @@
+{
+  "BlankCard": "BlankCard",
+  "BlankCard Sketch Message": "This is a blank sketch report for geography  with result .",
+  "BlankCard SketchCollection Message": "This is a blank sketch collection report for geography  with result .",
+  "SimpleCard ecoregion message": "The following ecoregions are nearby: <2></2>",
+  "SimpleCard sketch size message": "This sketch is <2>{{area}}</2> square kilometers",
+  "SimpleCard temperature message": "The present day sea surface temperature within this sketch is <2>{{minTemp}} - {{maxTemp}}°C</2>.",
+  "SimpleCard title": "Zone Report",
+  "Viability": "Viability"
+}

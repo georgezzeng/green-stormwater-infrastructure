@@ -1,0 +1,30 @@
+[
+  {
+    "geographyId": "world",
+    "datasourceId": "world",
+    "display": "World",
+    "groups": [],
+    "precalc": false
+  },
+  {
+    "geographyId": "eez",
+    "datasourceId": "global-eez-mr-v12",
+    "display": "United States Exclusive Economic Zone",
+    "propertyFilter": {
+      "property": "GEONAME",
+      "values": [
+        "United States Exclusive Economic Zone"
+      ]
+    },
+    "bboxFilter": [
+      -129.23482665059146,
+      23.833333333167218,
+      -65.69971857933155,
+      49.00226354612636
+    ],
+    "groups": [
+      "default-boundary"
+    ],
+    "precalc": true
+  }
+]
