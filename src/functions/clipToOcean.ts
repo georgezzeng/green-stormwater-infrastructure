@@ -58,5 +58,5 @@ export default new PreprocessingHandler(clipToOcean, {
   description: "Clips feature or sketch to ocean, removing land",
   timeout: 40,
   requiresProperties: [],
-  memory: 4096,
+  memory: 3008,
 });

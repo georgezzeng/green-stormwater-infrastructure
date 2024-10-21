@@ -65,5 +65,5 @@ export default new PreprocessingHandler(clipToLand, {
   description: "Clips portion of feature or sketch not overlapping land",
   timeout: 40,
   requiresProperties: [],
-  memory: 4096,
+  memory: 3008,
 });
