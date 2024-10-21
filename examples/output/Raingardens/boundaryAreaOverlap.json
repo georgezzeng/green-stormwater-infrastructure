@@ -1,0 +1,41 @@
+{
+  "metrics": [
+    {
+      "geographyId": "eez",
+      "metricId": "boundaryAreaOverlap",
+      "classId": "eez",
+      "sketchId": "46098",
+      "groupId": null,
+      "value": 0,
+      "extra": {
+        "sketchName": "Raingardens"
+      }
+    }
+  ],
+  "sketch": {
+    "id": 46098,
+    "bbox": [
+      -89.418015,
+      43.077663,
+      -89.41758,
+      43.078102
+    ],
+    "type": "Feature",
+    "properties": {
+      "9683": "Raingardens",
+      "id": "46098",
+      "name": "Raingardens",
+      "postId": null,
+      "userId": "1963",
+      "userSlug": null,
+      "createdAt": "2024-10-10T20:58:27.180732+00:00",
+      "updatedAt": "2024-10-10T20:58:27.180732+00:00",
+      "collectionId": null,
+      "isCollection": false,
+      "sharedInForum": false,
+      "sketchClassId": "1318",
+      "userAttributes": null
+    },
+    "geometry": null
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "metrics": [],
+  "sketch": {
+    "type": "Feature",
+    "properties": {
+      "9683": "Raingardens",
+      "id": "46098",
+      "name": "Raingardens",
+      "postId": null,
+      "userId": "1963",
+      "userSlug": null,
+      "createdAt": "2024-10-10T20:58:27.180732+00:00",
+      "updatedAt": "2024-10-10T20:58:27.180732+00:00",
+      "collectionId": null,
+      "isCollection": false,
+      "sharedInForum": false,
+      "sketchClassId": "1318",
+      "userAttributes": null
+    },
+    "id": 46098,
+    "bbox": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "geometry": null
+  }
+}
