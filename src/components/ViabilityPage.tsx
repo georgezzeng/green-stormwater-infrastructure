@@ -1,13 +1,13 @@
 import React from "react";
 import { SimpleCard } from "./SimpleCard.js";
+import { AreaCard } from "./AreaCard.js";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
-import { BoundaryAreaOverlap } from "./BoundaryAreaOverlap.tsx";
 
 export const ViabilityPage = () => {
   return (
     <>
       <SimpleCard />
-      <BoundaryAreaOverlap />
+      <AreaCard />
       <SketchAttributesCard autoHide />
     </>
   );

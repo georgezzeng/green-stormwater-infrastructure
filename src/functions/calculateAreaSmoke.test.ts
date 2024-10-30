@@ -1,20 +1,25 @@
+/**
+ * @vitest-environment node
+ */
+import Handler from "./calculateArea.js";
 import {
   getExamplePolygonSketchAll,
   writeResultOutput,
 } from "@seasketch/geoprocessing/scripts/testing";
 import { describe, test, expect } from "vitest";
-import { boundaryAreaOverlap } from "./boundaryAreaOverlap.js";
+
+const calculateArea = Handler.func;
 
 describe("Basic smoke tests", () => {
   test("handler function is present", () => {
-    expect(typeof boundaryAreaOverlap).toBe("function");
+    expect(typeof calculateArea).toBe("function");
   });
-  test("boundaryAreaOverlap - tests run against all examples", async () => {
+  test("calculateArea - tests run against all examples", async () => {
     const examples = await getExamplePolygonSketchAll();
     for (const example of examples) {
-      const result = await boundaryAreaOverlap(example);
+      const result = await calculateArea(example);
       expect(result).toBeTruthy();
-      writeResultOutput(result, "boundaryAreaOverlap", example.properties.name);
+      writeResultOutput(result, "calculateArea", example.properties.name);
     }
-  }, 60_000);
+  }, 100_000);
 });

@@ -12,15 +12,21 @@
       "name": "SimpleReport",
       "description": "Sketch size",
       "source": "src/clients/SimpleReport.tsx"
+    },
+    {
+      "name": "AreaReport",
+      "description": "Report suite with area calculation",
+      "source": "src/clients/AreaReport.tsx"
     }
   ],
   "preprocessingFunctions": [
     "src/functions/clipToLand.ts",
-    "src/functions/clipToOcean.ts"
+    "src/functions/clipToOcean.ts",
+    "src/functions/calculateArea.ts"
   ],
   "geoprocessingFunctions": [
     "src/functions/simpleFunction.ts",
     "src/functions/blankFunction.ts",
-    "src/functions/boundaryAreaOverlap.ts"
+    "src/functions/calculateArea.ts"
   ]
 }
