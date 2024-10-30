@@ -71,7 +71,7 @@ The project includes the following key features:
 
 1. **Create a new card component** in `src/components/<your-card-name>.tsx`.
 
-2. **Organize cards in a page component** if needed
+2. **Organize cards in a page component**
 
 ## Publishing
 
@@ -83,4 +83,11 @@ The project includes the following key features:
 
 ## Mapping the geoprocessing report client on SeaSketch Dashboard
 
+1. **Go to** https://www.seasketch.org/<your-seasketch-project-name>/admin/sketching
+2. **Under Geoprocessing tab, enter the service endpoint and choose the report client**
+
+## User sketch
+
+1. **Sketch using the sketch class that has geoprocessing function linked to it**
+2. **Right click on the sketch and view report**
 
