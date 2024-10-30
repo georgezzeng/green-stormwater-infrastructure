@@ -9,8 +9,9 @@ This project is developed using the SeaSketch Geoprocessing Framework to create 
 - [Developing a Geoprocessing Function](#developing-a-geoprocessing-function)
 - [Creating a Report Client](#creating-a-report-client)
 - [Creating a UI Component](#creating-a-ui-component)
-- [Testing and Publishing](#testing-and-publishing)
-- [Contributing](#contributing)
+- [Publishing](#publishing)
+- [Mapping the Geoprocessing Report Client on SeaSketch Dashboard](#mapping-the-geoprocessing-report-client-on-seasketch-dashboard)
+- [User Sketch](#user-sketch)
 
 ## Overview
 
