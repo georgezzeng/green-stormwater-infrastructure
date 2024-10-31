@@ -84,7 +84,7 @@ The project includes the following key features:
 
 ## Mapping the geoprocessing report client on SeaSketch Dashboard
 
-1. **Go to** https://www.seasketch.org/<your-seasketch-project-name>/admin/sketching
+1. **Go to** https://www.seasketch.org/<your-seasketch-project-name>admin/sketching
 2. **Under Geoprocessing tab, enter the service endpoint and choose the report client**
 
 ## User sketch
