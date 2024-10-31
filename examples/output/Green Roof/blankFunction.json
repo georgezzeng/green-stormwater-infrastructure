@@ -1,0 +1,29 @@
+{
+  "metrics": [],
+  "sketch": {
+    "type": "Feature",
+    "properties": {
+      "9683": "Green Roof",
+      "id": "51880",
+      "name": "Green Roof",
+      "postId": null,
+      "userId": "1963",
+      "userSlug": null,
+      "createdAt": "2024-10-31T19:05:03.187927+00:00",
+      "updatedAt": "2024-10-31T19:05:03.187927+00:00",
+      "collectionId": null,
+      "isCollection": false,
+      "sharedInForum": false,
+      "sketchClassId": "1318",
+      "userAttributes": null
+    },
+    "id": 51880,
+    "bbox": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "geometry": null
+  }
+}
