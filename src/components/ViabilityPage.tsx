@@ -6,7 +6,6 @@ import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 export const ViabilityPage = () => {
   return (
     <>
-      <SimpleCard />
       <AreaCard />
       <SketchAttributesCard autoHide />
     </>
