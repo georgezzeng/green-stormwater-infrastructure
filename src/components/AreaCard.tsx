@@ -21,6 +21,7 @@ export const AreaCard = () => {
     <>
       <ResultsCard title={titleTrans} functionName="calculateArea">
         {(data: AreaResults) => {
+          console.log("Area Results:", data);
           return (
             <>
               <p>
