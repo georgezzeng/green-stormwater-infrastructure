@@ -5,8 +5,13 @@
   "clients": [
     {
       "name": "GreenRoofReport",
-      "description": "Report suite with area calculation",
+      "description": "Green Roof Report based on Area",
       "source": "src/clients/GreenRoofReport.tsx"
+    },
+    {
+      "name": "RainGardenReport",
+      "description": "Rain Garden Report based on Area",
+      "source": "src/clients/RainGardenReport.tsx"
     }
   ],
   "preprocessingFunctions": [

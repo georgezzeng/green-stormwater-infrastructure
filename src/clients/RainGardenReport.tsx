@@ -3,12 +3,12 @@ import React from "react";
 import Translator from "../components/TranslatorAsync.js";
 import { ViabilityPage } from "../components/ViabilityPage.tsx";
 
-export const GreenRoofReport = () => {
+export const RainGardenReport = () => {
   return (
     <Translator>
-      <ViabilityPage infrastructureType="greenRoof"/>
+      <ViabilityPage infrastructureType="rainGarden"/>
     </Translator>
   );
 };
 
-export default GreenRoofReport;
+export default RainGardenReport;
