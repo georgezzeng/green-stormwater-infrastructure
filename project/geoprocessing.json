@@ -4,11 +4,6 @@
   "region": "us-west-1",
   "clients": [
     {
-      "name": "AreaReport",
-      "description": "Report suite with area calculation",
-      "source": "src/clients/AreaReport.tsx"
-    },
-    {
       "name": "GreenRoofReport",
       "description": "Report suite with area calculation",
       "source": "src/clients/GreenRoofReport.tsx"
