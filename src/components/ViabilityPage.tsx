@@ -1,25 +1,31 @@
+
 import React, { useState } from "react";
-import { AreaCard } from "./AreaCard.js";
+import { AreaCard } from "./AreaCard.tsx";
+import InfrastructureChart from "./InfrastructureChart.tsx";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
-import GreenRoofChart from "./InfrastructureChart.tsx";
+import { InfrastructureConfig, infrastructureTypes } from "../data/infrastructureData.ts";
 
+interface ViabilityPageProps {
+  infrastructureType: keyof typeof infrastructureTypes;
+}
 
-export const ViabilityPage = () => {
+export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType }) => {
   const [area, setArea] = useState<number | null>(null);
 
   return (
     <>
-      <AreaCard onAreaCalculated={setArea}/>
+      <AreaCard onAreaCalculated={setArea} />
       <SketchAttributesCard autoHide />
 
-      {/* Only render GreenRoofChart if area is available */}
+      {/* Render the InfrastructureChart based on provided infrastructure type and calculated area */}
       {area !== null && (
         <div style={{ padding: "2rem" }}>
-          <h2>Green Roof Analysis</h2>
-          <GreenRoofChart area={area} />
+          <h2>{infrastructureTypes[infrastructureType].name} Analysis</h2>
+          <InfrastructureChart area={area} infrastructureType={infrastructureType} />
         </div>
       )}
     </>
   );
 };
 
+export default ViabilityPage;
