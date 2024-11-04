@@ -1,13 +1,13 @@
 // src/clients/AreaReport.tsx
 import React from "react";
 import Translator from "../components/TranslatorAsync.js";
-import { AreaCard } from "../components/AreaCard.js";
+import { ViabilityPage } from "../components/ViabilityPage.tsx";
 
 // Named export loaded by storybook
 export const AreaReport = () => {
   return (
     <Translator>
-      <AreaCard />
+      <ViabilityPage />
     </Translator>
   );
 };
