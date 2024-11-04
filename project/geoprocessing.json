@@ -4,14 +4,14 @@
   "region": "us-west-1",
   "clients": [
     {
-      "name": "TabReport",
-      "description": "Report suite with tab navigation",
-      "source": "src/clients/TabReport.tsx"
-    },
-    {
       "name": "AreaReport",
       "description": "Report suite with area calculation",
       "source": "src/clients/AreaReport.tsx"
+    },
+    {
+      "name": "GreenRoofReport",
+      "description": "Report suite with area calculation",
+      "source": "src/clients/GreenRoofReport.tsx"
     }
   ],
   "preprocessingFunctions": [
