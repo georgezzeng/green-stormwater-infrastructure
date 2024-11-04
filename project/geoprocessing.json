@@ -12,6 +12,11 @@
       "name": "RainGardenReport",
       "description": "Rain Garden Report based on Area",
       "source": "src/clients/RainGardenReport.tsx"
+    },
+    {
+      "name": "PermeablePavementReport",
+      "description": "Permeable Pavement Report based on Area",
+      "source": "src/clients/PermeablePavementReport.tsx"
     }
   ],
   "preprocessingFunctions": [
