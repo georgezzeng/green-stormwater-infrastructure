@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AreaCard } from "./AreaCard.js";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
-import GreenRoofChart from "./GreenRoofChart.tsx";
+import GreenRoofChart from "./InfrastructureChart.tsx";
 
 
 export const ViabilityPage = () => {
