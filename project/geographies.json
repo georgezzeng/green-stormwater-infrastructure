@@ -3,8 +3,8 @@
     "geographyId": "world",
     "datasourceId": "world",
     "display": "World",
-    "groups": [],
-    "precalc": false
+    "groups": ["default-boundary"],
+    "precalc": true
   },
   {
     "geographyId": "eez",
@@ -22,9 +22,7 @@
       -65.69971857933155,
       49.00226354612636
     ],
-    "groups": [
-      "default-boundary"
-    ],
-    "precalc": true
+    "groups": [],
+    "precalc": false
   }
 ]
