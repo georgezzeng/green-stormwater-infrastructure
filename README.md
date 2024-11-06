@@ -2,6 +2,14 @@
 
 This project is developed using the SeaSketch Geoprocessing Framework to create geoprocessing functions, report clients, and UI components.
 
+# Goals for this project
+
+1) Design Fields to quantify the benefits and costs of green infrastructure practices and associate them with point, line, and polygon features for sketching.
+2) Dashboards to visualize progress towards meeting community stormwater capture goals while meeting budgets.
+3) Scenarios allowing sketching of alternative green infrastructure approaches.
+4) Study Areas to compare the benefits of green infrastructure scenarios across scales from sites to watersheds.
+
+
 ## Table of Contents
 
 - [Overview](#overview)
