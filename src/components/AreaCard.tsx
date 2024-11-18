@@ -41,13 +41,11 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
   );
 };
 
-/**
- * AreaCard as a top-level report client
- */
+
 export const AreaCardReportClient = () => {
   return (
     <Translator>
-      <AreaCard onAreaCalculated={() => {}} /> {/* Placeholder function */}
+      <AreaCard onAreaCalculated={() => {}} /> 
     </Translator>
   );
 };
