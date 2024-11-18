@@ -24,7 +24,7 @@
     "src/functions/clipToOcean.ts"
   ],
   "geoprocessingFunctions": [
-    "src/functions/blankFunction.ts",
-    "src/functions/calculateArea.ts"
+    "src/functions/calculateArea.ts",
+    "src/functions/calculatePerim.ts"
   ]
 }

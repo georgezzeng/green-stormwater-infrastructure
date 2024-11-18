@@ -1,4 +1,3 @@
-// src/components/AreaCard.tsx
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
