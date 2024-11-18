@@ -23,9 +23,8 @@ import {
       | SketchCollection<Polygon | MultiPolygon>,
     extraParams: DefaultExtraParams = {}
   ): Promise<PerimeterResults> {
-    console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
+    // console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
   
-    // Use caller-provided geographyId if provided
     const geographyId = getFirstFromParam("geographyIds", extraParams);
     // Get geography features, falling back to geography assigned to default-boundary group
     const curGeography = project.getGeographyById(geographyId, {
@@ -59,8 +58,8 @@ import {
   export default new GeoprocessingHandler(calculatePerim, {
     title: "calculatePerim",
     description: "Calculates perimeter of the sketch in feet",
-    timeout: 60, // seconds
-    memory: 1024, // megabytes
+    timeout: 60,
+    memory: 1024,
     executionMode: "async",
     requiresProperties: [],
   });

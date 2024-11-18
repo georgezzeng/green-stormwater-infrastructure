@@ -13,7 +13,6 @@ import project from "../../project/projectClient.js";
 import { clipToGeography } from "../util/clipToGeography.js";
 
 export interface AreaResults {
-  /** area of sketch in square feet */
   area: number;
 }
 
@@ -23,9 +22,8 @@ async function calculateArea(
     | SketchCollection<Polygon | MultiPolygon>,
   extraParams: DefaultExtraParams = {}
 ): Promise<AreaResults> {
-  console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
+  // console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
 
-  // Use caller-provided geographyId if provided
   const geographyId = getFirstFromParam("geographyIds", extraParams);
   // Get geography features, falling back to geography assigned to default-boundary group
   const curGeography = project.getGeographyById(geographyId, {
@@ -49,8 +47,8 @@ async function calculateArea(
 export default new GeoprocessingHandler(calculateArea, {
   title: "calculateArea",
   description: "Calculates area of the sketch in square feet",
-  timeout: 60, // seconds
-  memory: 1024, // megabytes
+  timeout: 60,
+  memory: 1024,
   executionMode: "async",
   requiresProperties: [],
 });
