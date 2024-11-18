@@ -9,15 +9,15 @@ import {
     splitSketchAntimeridian,
   } from "@seasketch/geoprocessing";
   import { length as turfLength, lineString } from "@turf/turf";
-  import project from "../../project/projectClient.js";
-  import { clipToGeography } from "../util/clipToGeography.js";
+  import project from "../../project/projectClient.ts";
+  import { clipToGeography } from "../util/clipToGeography.ts";
   
   export interface PerimeterResults {
     /** perimeter of sketch in feet */
     perimeter: number;
   }
   
-  async function calculatePerimeter(
+  async function calculatePerim(
     sketch:
       | Sketch<Polygon | MultiPolygon>
       | SketchCollection<Polygon | MultiPolygon>,
@@ -56,8 +56,8 @@ import {
     };
   }
   
-  export default new GeoprocessingHandler(calculatePerimeter, {
-    title: "calculatePerimeter",
+  export default new GeoprocessingHandler(calculatePerim, {
+    title: "calculatePerim",
     description: "Calculates perimeter of the sketch in feet",
     timeout: 60, // seconds
     memory: 1024, // megabytes

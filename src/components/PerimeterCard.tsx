@@ -2,7 +2,7 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
-import { PerimeterResults } from "../functions/calculatePerimeter.ts";
+import { PerimeterResults } from "../functions/calculatePerim.ts";
 import Translator from "../components/TranslatorAsync.js";
 import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 
@@ -21,7 +21,7 @@ export const PerimeterCard: React.FC<PerimeterCardProps> = ({ onPerimeterCalcula
 
   return (
     <>
-      <ResultsCard title={titleTrans} functionName="calculatePerimeter">
+      <ResultsCard title={titleTrans} functionName="calculatePerim">
         {(data: PerimeterResults) => {
           const perimeter = roundDecimal(data.perimeter, 2);
           onPerimeterCalculated(perimeter); // Pass the perimeter up to the parent
