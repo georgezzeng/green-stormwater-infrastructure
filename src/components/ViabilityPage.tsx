@@ -4,6 +4,9 @@ import InfrastructureChart from "./InfrastructureChart.tsx";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 import { InfrastructureConfig, infrastructureTypes } from "../data/infrastructureData.ts";
 import { PerimeterCard } from "./PerimeterCard.tsx";
+import RainCaptureProgress from "./RainCaptureProgress.tsx";
+import CostVsBudgetBar from "./CostVsBudgetBar.tsx";
+import RemainingBudgetIndicator from "./RemainingBudgetIndicator.tsx";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
@@ -15,16 +18,14 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const [budget, setBudget] = useState<number | null>(null);
   const [rainCaptureGoal, setRainCaptureGoal] = useState<number | null>(null);
 
-  // Calculate estimated cost based on area
+  // Calculate estimated cost and capacity
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
   const estimatedTotalCost = area ? area * config.costPerSqFt : 0;
   const capacityIncrease = area ? area * config.capacityIncreasePerSqFt : 0;
 
-  // Determine if the budget meets the estimated total cost
-  const isBudgetSufficient = budget !== null && estimatedTotalCost <= budget;
-
   return (
     <>
+      <h1>Viability Report</h1>
       <AreaCard onAreaCalculated={setArea} />
       <PerimeterCard onPerimeterCalculated={setPerimeter} />
       <SketchAttributesCard autoHide />
@@ -51,35 +52,18 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
         </label>
       </div>
 
-      {/* Render analysis */}
-      {area !== null && (
+      {/* Render analysis and visualizations */}
+      {area !== null && budget !== null && rainCaptureGoal !== null && (
         <div style={{ padding: "2rem" }}>
           <h2>{infrastructureTypes[infrastructureType].name} Analysis</h2>
           <InfrastructureChart area={area} infrastructureType={infrastructureType} />
+
           <div style={{ marginTop: "2rem" }}>
             <h3>Feasibility Analysis</h3>
             <p>Estimated Total Cost: ${estimatedTotalCost.toFixed(2)}</p>
-            <p>
-              {budget !== null
-                ? isBudgetSufficient
-                  ? "Your budget is sufficient to cover the estimated cost."
-                  : "Your budget is insufficient to cover the estimated cost."
-                : "Please enter your budget for analysis."}
-            </p>
-            <p>
-              {rainCaptureGoal !== null
-                ? `Projected Rain Capture Capacity: ${capacityIncrease.toFixed(
-                    2
-                  )} gallons.`
-                : "Please enter your rain capture goal for comparison."}
-            </p>
-            {rainCaptureGoal !== null && (
-              <p>
-                {capacityIncrease >= rainCaptureGoal
-                  ? "The projected capacity meets or exceeds your rain capture goal."
-                  : "The projected capacity does not meet your rain capture goal."}
-              </p>
-            )}
+            <RainCaptureProgress projectedCapacity={capacityIncrease} rainCaptureGoal={rainCaptureGoal} />
+            <CostVsBudgetBar budget={budget} estimatedCost={estimatedTotalCost} />
+            <RemainingBudgetIndicator budget={budget} estimatedCost={estimatedTotalCost} />
           </div>
         </div>
       )}
