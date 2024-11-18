@@ -4,6 +4,7 @@ import { AreaCard } from "./AreaCard.tsx";
 import InfrastructureChart from "./InfrastructureChart.tsx";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 import { InfrastructureConfig, infrastructureTypes } from "../data/infrastructureData.ts";
+import { PerimeterCard } from "./PerimeterCard.tsx";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
@@ -11,10 +12,12 @@ interface ViabilityPageProps {
 
 export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType }) => {
   const [area, setArea] = useState<number | null>(null);
+  const [perimeter, setPerimeter] = useState<number | null>(null);
 
   return (
     <>
       <AreaCard onAreaCalculated={setArea} />
+      <PerimeterCard onPerimeterCalculated={setPerimeter} />
       <SketchAttributesCard autoHide />
 
       {/* Render the InfrastructureChart based on provided infrastructure type and calculated area */}
