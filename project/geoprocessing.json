@@ -24,6 +24,7 @@
     "src/functions/clipToOcean.ts"
   ],
   "geoprocessingFunctions": [
-    "src/functions/calculateArea.ts"
+    "src/functions/calculateArea.ts",
+    "src/functions/calculatePerimeter.ts",
   ]
 }
