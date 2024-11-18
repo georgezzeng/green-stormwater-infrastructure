@@ -25,7 +25,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   return (
     <>
-      <h1>Viability Report</h1>
       <AreaCard onAreaCalculated={setArea} />
       <PerimeterCard onPerimeterCalculated={setPerimeter} />
       <SketchAttributesCard autoHide />
@@ -52,7 +51,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
         </label>
       </div>
 
-      {/* Render analysis and visualizations */}
       {area !== null && budget !== null && rainCaptureGoal !== null && (
         <div style={{ padding: "2rem" }}>
           <h2>{infrastructureTypes[infrastructureType].name} Analysis</h2>
