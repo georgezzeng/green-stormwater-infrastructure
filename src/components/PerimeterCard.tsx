@@ -3,7 +3,7 @@ import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
 import { PerimeterResults } from "../functions/calculatePerimeter.ts";
-import Translator from "../components/TranslatorAsync.ts";
+import Translator from "../components/TranslatorAsync.js";
 import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 
 const Number = new Intl.NumberFormat("en", { style: "decimal" });

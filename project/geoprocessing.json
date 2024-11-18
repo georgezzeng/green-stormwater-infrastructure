@@ -25,6 +25,6 @@
   ],
   "geoprocessingFunctions": [
     "src/functions/calculateArea.ts",
-    "src/functions/calculatePerimeter.ts",
+    "src/functions/calculatePerimeter.ts"
   ]
 }
