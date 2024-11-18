@@ -42,9 +42,6 @@ export const PerimeterCard: React.FC<PerimeterCardProps> = ({ onPerimeterCalcula
   );
 };
 
-/**
- * PerimeterCard as a top-level report client
- */
 export const PerimeterCardReportClient = () => {
   return (
     <Translator>
