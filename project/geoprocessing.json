@@ -17,6 +17,16 @@
       "name": "PermeablePavementReport",
       "description": "Permeable Pavement Report based on Area",
       "source": "src/clients/PermeablePavementReport.tsx"
+    },
+    {
+      "name": "TreeReport",
+      "description": "Tree Report",
+      "source": "src/clients/TreeReport.tsx"
+    },
+    {
+      "name": "SwaleReport",
+      "description": "Swale Report",
+      "source": "src/clients/SwaleReport.tsx"
     }
   ],
   "preprocessingFunctions": [
