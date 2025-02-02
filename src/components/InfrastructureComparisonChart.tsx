@@ -1,35 +1,84 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { infrastructureTypes } from "../data/infrastructureData.ts";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 interface InfrastructureComparisonChartProps {
   selectedType: keyof typeof infrastructureTypes;
-  area: number;
+  area?: number; // Area in square feet (for polygons)
+  pointCount?: number; // Number of points (for trees)
+  lineLength?: number; // Length in feet (for lines)
 }
 
-const InfrastructureComparisonChart: React.FC<InfrastructureComparisonChartProps> = ({ selectedType, area }) => {
+const InfrastructureComparisonChart: React.FC<InfrastructureComparisonChartProps> = ({
+  selectedType,
+  area,
+  pointCount,
+  lineLength,
+}) => {
   const selectedConfig = infrastructureTypes[selectedType];
 
+  // Determine the base value for calculations
+  const baseValue = selectedConfig.category === "polygon"
+    ? area ?? 0
+    : selectedConfig.category === "point"
+    ? pointCount ?? 0
+    : lineLength ?? 0;
+
+  // Generate data for all infrastructure types
   const labels = Object.keys(infrastructureTypes);
   const data = {
     labels,
     datasets: [
       {
         label: "Cost (USD)",
-        data: labels.map((type) => area * infrastructureTypes[type as keyof typeof infrastructureTypes].costPerSqFt),
+        data: labels.map((type) => {
+          const config = infrastructureTypes[type as keyof typeof infrastructureTypes];
+          const typeBaseValue =
+            config.category === "polygon"
+              ? area ?? 0
+              : config.category === "point"
+              ? pointCount ?? 0
+              : lineLength ?? 0;
+          return typeBaseValue * config.costPerSqFt;
+        }),
         backgroundColor: "#42a5f5",
       },
       {
         label: "Maintenance Cost (USD)",
-        data: labels.map((type) => area * infrastructureTypes[type as keyof typeof infrastructureTypes].maintenanceCostPerSqFt),
+        data: labels.map((type) => {
+          const config = infrastructureTypes[type as keyof typeof infrastructureTypes];
+          const typeBaseValue =
+            config.category === "polygon"
+              ? area ?? 0
+              : config.category === "point"
+              ? pointCount ?? 0
+              : lineLength ?? 0;
+          return typeBaseValue * config.maintenanceCostPerSqFt;
+        }),
         backgroundColor: "#ff9800",
       },
       {
         label: "Capacity Increase (Gallons)",
-        data: labels.map((type) => area * infrastructureTypes[type as keyof typeof infrastructureTypes].capacityIncreasePerSqFt),
+        data: labels.map((type) => {
+          const config = infrastructureTypes[type as keyof typeof infrastructureTypes];
+          const typeBaseValue =
+            config.category === "polygon"
+              ? area ?? 0
+              : config.category === "point"
+              ? pointCount ?? 0
+              : lineLength ?? 0;
+          return typeBaseValue * config.capacityIncreasePerSqFt;
+        }),
         backgroundColor: "#4caf50",
       },
     ],
