@@ -36,7 +36,7 @@
   "geoprocessingFunctions": [
     "src/functions/calculateArea.ts",
     "src/functions/calculatePerim.ts",
-    "src/functions/calculateLine.ts",
-    "src/functions/calculatePoint.ts"
+    "src/functions/calculatePoint.ts",
+    "src/functions/calculateLength.ts"
   ]
 }
