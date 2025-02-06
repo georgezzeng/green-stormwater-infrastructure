@@ -20,7 +20,7 @@ interface ViabilityPageProps {
 export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType, featureId }) => {
   // For polygon analysis.
   const [area, setArea] = useState<number | null>(null);
-  // For line (swale) analysis, store both dimensions.
+  // For swale analysis (line), store both dimensions.
   const [lineLength, setLineLength] = useState<number | null>(null);
   const [width, setWidth] = useState<number | null>(null);
   // For point analysis.
@@ -36,7 +36,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     const savedData = JSON.parse(localStorage.getItem(featureId) || "{}");
     if (savedData.budget) setBudget(savedData.budget);
     if (savedData.rainCaptureGoal) setRainCaptureGoal(savedData.rainCaptureGoal);
-    if (savedData.width) setWidth(savedData.width);
+    if (savedData.width != null) setWidth(savedData.width);
   }, [featureId]);
 
   const saveData = () => {
@@ -50,7 +50,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     }
   }, [budget, rainCaptureGoal, width]);
 
-  // Calculate cost and capacity based on the infrastructure category.
+  // Calculate cost and capacity.
   let estimatedTotalCost = 0;
   let capacityIncrease = 0;
 
@@ -93,13 +93,13 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
               // Callback to receive dimensions from the backend.
               onLineDimensionsCalculated={(backendLength: number, backendWidth: number) => {
                 setLineLength(backendLength);
-                // Only update width from the backend if the user hasn't overridden it.
-                if (width === null) {
+                // Update width only if the user hasn't overridden it.
+                if (width == null) {
                   setWidth(backendWidth);
                 }
               }}
-              // Pass override width to the backend.
-              extraParams={{ overrideWidth: width }}
+              // Only pass extraParams if width is not null.
+              extraParams={width != null ? { overrideWidth: width } : {}}
             />
           )}
           {config.category === "point" && <PointCard onPointCountCalculated={setPointCount} />}
@@ -134,7 +134,10 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
                 <input
                   type="number"
                   value={width ?? ""}
-                  onChange={(e) => setWidth(Number(e.target.value))}
+                  onChange={(e) => {
+                    const newWidth = Number(e.target.value);
+                    setWidth(isNaN(newWidth) ? null : newWidth);
+                  }}
                   placeholder="Enter swale width"
                   className="styled-input"
                 />

@@ -1,20 +1,20 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
-import { LengthResults } from "../functions/calculateLength"; // Import updated interface
+import { LengthResults } from "../functions/calculateLength.ts"; // Updated interface import
 import Translator from "../components/TranslatorAsync.js";
 import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 
 const Number = new Intl.NumberFormat("en", { style: "decimal" });
 
 interface LineCardProps {
-  onLineDimensionsCalculated: (length: number, width: number) => void; // Callback to pass both dimensions upward
+  onLineDimensionsCalculated: (length: number, width: number) => void; // Callback for both dimensions
   extraParams?: any; // Extra parameters (e.g. width override) to pass to the backend
 }
 
 /**
- * LineCard component: calls the backend function "calculateLength" and displays both the longer side (length)
- * and the shorter side (width) of the polygon.
+ * LineCard component: calls the backend function "calculateLength" and displays
+ * both the longer side (length) and the shorter side (width) of the polygon.
  */
 export const LineCard: React.FC<LineCardProps> = ({ onLineDimensionsCalculated, extraParams }) => {
   const { t } = useTranslation();

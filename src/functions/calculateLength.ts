@@ -39,13 +39,13 @@ async function calculateLength(
   sketch: Sketch<Polygon | MultiPolygon> | SketchCollection<Polygon | MultiPolygon>,
   extraParams: DefaultExtraParams = {}
 ): Promise<LengthResults> {
-  // Get the geography and perform antimeridian splitting and clipping.
+  // Get geography information.
   const geographyId = getFirstFromParam("geographyIds", extraParams);
   const curGeography = project.getGeographyById(geographyId, { fallbackGroup: "default-boundary" });
   const splitSketch = splitSketchAntimeridian(sketch);
   const clippedSketch = await clipToGeography(splitSketch, curGeography);
 
-  // Normalize the result to an array of features.
+  // Normalize to an array of features.
   let features: any[] = [];
   if (clippedSketch.type === "FeatureCollection" && Array.isArray(clippedSketch.features)) {
     features = clippedSketch.features;
@@ -63,11 +63,16 @@ async function calculateLength(
   }
   const polygon = feature.geometry as Polygon;
 
-  // Compute dimensions.
+  // Compute dimensions from the polygon's exterior ring.
   let { length, width } = computeDimensions(polygon);
 
-  // Use an override width if provided.
-  if (extraParams && extraParams.overrideWidth !== undefined) {
+  // If an override for width is provided and is a valid number, use it.
+  if (
+    extraParams &&
+    extraParams.overrideWidth != null &&
+    typeof extraParams.overrideWidth === "number" &&
+    !isNaN(extraParams.overrideWidth)
+  ) {
     width = extraParams.overrideWidth;
   }
 
