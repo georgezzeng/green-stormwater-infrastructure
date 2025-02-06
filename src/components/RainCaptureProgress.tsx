@@ -6,7 +6,7 @@ interface RainCaptureProgressProps {
 }
 
 const RainCaptureProgress: React.FC<RainCaptureProgressProps> = ({ projectedCapacity, rainCaptureGoal }) => {
-  const progressPercentage = Math.min((projectedCapacity / rainCaptureGoal) * 100, 100);
+  const progressPercentage = (projectedCapacity / rainCaptureGoal) * 100;
 
   return (
     <div style={{ margin: "1rem 0" }}>
@@ -16,7 +16,7 @@ const RainCaptureProgress: React.FC<RainCaptureProgressProps> = ({ projectedCapa
           style={{
             height: "100%",
             width: `${progressPercentage}%`,
-            background: "#4caf50",
+            background: progressPercentage > 100 ? "#f44336" : "#4caf50",
             transition: "width 0.3s",
           }}
         ></div>
