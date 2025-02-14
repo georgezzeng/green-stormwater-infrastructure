@@ -1,14 +1,13 @@
-
 import React from "react";
 import Translator from "../components/TranslatorAsync.js";
 import { ViabilityPage } from "../components/ViabilityPage.tsx";
 
-export const PermeablePavementReport = () => {
+export const PermeableSidewalksReport = () => {
   return (
     <Translator>
-      <ViabilityPage infrastructureType="permeablePavement"/>
+      <ViabilityPage infrastructureType="permeableSidewalks" />
     </Translator>
   );
 };
 
-export default PermeablePavementReport;
+export default PermeableSidewalksReport;
