@@ -3,51 +3,145 @@ export type InfrastructureCategory = "polygon" | "line" | "point";
 export interface InfrastructureConfig {
   name: string;
   category: InfrastructureCategory;
-  costPerSqFt: number;
-  capitalCostPerSqFt: number;
-  maintenanceCostPerSqFt: number;
-  capacityIncreasePerSqFt: number;
+
+  // Only for polygons
+  capitalCostPerSqFt?: number;
+  capacityIncreasePerSqFt?: number;
+
+  // Only for lines
+  capitalCostPerFt?: number;
+  capacityIncreasePerFt?: number;
+
+  // Only for points
+  capitalCostPerPoint?: number;
+  capacityIncreasePerPoint?: number;
 }
 
 export const infrastructureTypes: Record<string, InfrastructureConfig> = {
   greenRoof: {
     name: "Green Roof",
     category: "polygon",
-    costPerSqFt: 26,
-    capitalCostPerSqFt: 11.98,
-    maintenanceCostPerSqFt: 0.75,
     capacityIncreasePerSqFt: 1.4,
+    capitalCostPerSqFt: 11.98,
+  },
+  rainBarrel: {
+    name: "Rain Barrel",
+    category: "point",
+    capacityIncreasePerPoint: 55,
+    capitalCostPerPoint: 110,
+  },
+  cistern: {
+    name: "Cistern",
+    category: "point",
+    capacityIncreasePerPoint: 1000,
+    capitalCostPerPoint: 1370,
+  },
+  drywell: {
+    name: "Drywell",
+    category: "point",
+    capacityIncreasePerPoint: 50,
+    capitalCostPerPoint: 250,
   },
   rainGarden: {
     name: "Rain Garden",
     category: "polygon",
-    costPerSqFt: 14,
-    capitalCostPerSqFt: 6.07,
-    maintenanceCostPerSqFt: 0.41,
     capacityIncreasePerSqFt: 6.3,
+    capitalCostPerSqFt: 6.07,
   },
-  tree: {
-    name: "Tree",
+  planterBoxes: {
+    name: "Planter Boxes",
     category: "point",
-    costPerSqFt: 3733,
-    capitalCostPerSqFt: 250,
-    maintenanceCostPerSqFt: 180,
-    capacityIncreasePerSqFt: 311.2,
+    capacityIncreasePerPoint: 163.1,
+    capitalCostPerPoint: 236.5,
   },
-  swale: {
-    name: "Swale",
+  foundationPerimeterDrain: {
+    name: "Foundation/Perimeter Drain",
     category: "line",
-    costPerSqFt: 32,
-    capitalCostPerSqFt: 17.58,
-    maintenanceCostPerSqFt: 0.26,
-    capacityIncreasePerSqFt: 4.2,
+    capacityIncreasePerFt: 0.7,
+    capitalCostPerFt: 45,
   },
-  permeablePavement: {
-    name: "Permeable Pavement",
+  trees: {
+    name: "Trees",
+    category: "point",
+    capacityIncreasePerPoint: 311.2,
+    capitalCostPerPoint: 250,
+  },
+  amendedSoil: {
+    name: "Amended Soil",
     category: "polygon",
-    costPerSqFt: 13,
-    capitalCostPerSqFt: 8.68,
-    maintenanceCostPerSqFt: 0.02,
+    capacityIncreasePerSqFt: 1.3,
+    capitalCostPerSqFt: 0.29,
+  },
+  bioSwales: {
+    name: "Bio-Swales",
+    category: "line",
+    capacityIncreasePerFt: 1.1,
+    capitalCostPerFt: 17.58,
+  },
+  urbanFarmingGardening: {
+    name: "Urban Farming/Gardening",
+    category: "polygon",
+    capacityIncreasePerSqFt: 1.5,
+    capitalCostPerSqFt: 0.29,
+  },
+  raisedBed: {
+    name: "Raised Bed",
+    category: "polygon",
+    capacityIncreasePerSqFt: 3.2,
+    capitalCostPerSqFt: 9.46,
+  },
+  vegetationFilterStrip: {
+    name: "Vegetation Filter Strip",
+    category: "line",
+    capacityIncreasePerFt: 8,
+    capitalCostPerFt: 0.59,
+  },
+  nativeVegetation: {
+    name: "Native Vegetation",
+    category: "polygon",
+    capacityIncreasePerSqFt: 1.7,
+    capitalCostPerSqFt: 0.19,
+  },
+  parkingLotSwales: {
+    name: "Parking Lot Swales",
+    category: "line",
+    capacityIncreasePerFt: 2,
+    capitalCostPerFt: 36.93,
+  },
+  roadsideSwales: {
+    name: "Roadside Swales",
+    category: "line",
+    capacityIncreasePerFt: 1.6,
+    capitalCostPerFt: 36.93,
+  },
+  permeablePatio: {
+    name: "Permeable Patio",
+    category: "polygon",
     capacityIncreasePerSqFt: 1.2,
+    capitalCostPerSqFt: 8.68,
+  },
+  permeableParking: {
+    name: "Permeable Parking",
+    category: "polygon",
+    capacityIncreasePerSqFt: 1.6,
+    capitalCostPerSqFt: 8.68,
+  },
+  permeableSidewalks: {
+    name: "Permeable Sidewalks",
+    category: "polygon",
+    capacityIncreasePerSqFt: 1.2,
+    capitalCostPerSqFt: 8.68,
+  },
+  permeableDriveway: {
+    name: "Permeable Driveway",
+    category: "polygon",
+    capacityIncreasePerSqFt: 1.6,
+    capitalCostPerSqFt: 8.68,
+  },
+  permeableStreets: {
+    name: "Permeable Streets",
+    category: "polygon",
+    capacityIncreasePerSqFt: 1.6,
+    capitalCostPerSqFt: 8.68,
   },
 };
