@@ -1,21 +1,17 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
-import { LengthResults } from "../functions/calculateLength"; // Updated interface import
+import { LengthResults } from "../functions/calculateLength.ts";
 import Translator from "../components/TranslatorAsync.js";
 import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 
 const NumberFormatter = new Intl.NumberFormat("en", { style: "decimal" });
 
 interface LineCardProps {
-  onLineDimensionsCalculated: (length: number) => void; // Callback now only for length
-  extraParams?: any; // Extra parameters (if needed) to pass to the backend
+  onLineDimensionsCalculated: (length: number) => void;
+  extraParams?: any; 
 }
 
-/**
- * LineCard component: calls the backend function "calculateLength" and displays
- * the length of the line.
- */
 export const LineCard: React.FC<LineCardProps> = ({ onLineDimensionsCalculated, extraParams }) => {
   const { t } = useTranslation();
   const titleTrans = t("LineCard title", "Line Report");

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AreaCard } from "./AreaCard.tsx";
-import { LineCard } from "./LineCard.tsx"; // This calls calculateLength
+import { LineCard } from "./LineCard.tsx";
 import { PointCard } from "./PointCard.tsx";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.tsx";
@@ -18,11 +18,8 @@ interface ViabilityPageProps {
 }
 
 export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType, featureId }) => {
-  // For polygon analysis.
   const [area, setArea] = useState<number | null>(null);
-  // For swale (line) analysis.
   const [lineLength, setLineLength] = useState<number | null>(null);
-  // For point analysis.
   const [pointCount, setPointCount] = useState<number | null>(null);
   const [budget, setBudget] = useState<number | null>(null);
   const [rainCaptureGoal, setRainCaptureGoal] = useState<number | null>(null);
@@ -30,7 +27,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
 
-  // Load saved values from local storage.
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem(featureId) || "{}");
     if (savedData.budget) setBudget(savedData.budget);
@@ -48,7 +44,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     }
   }, [budget, rainCaptureGoal]);
 
-  // Calculate cost and capacity.
   let estimatedTotalCost = 0;
   let capacityIncrease = 0;
 
@@ -65,7 +60,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   return (
     <div className="viability-page">
-      {/* Tab Navigation */}
       <div className="tab-container">
         <button
           className={`tab ${tab === "analysis" ? "active-tab" : ""}`}
@@ -81,20 +75,17 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
         </button>
       </div>
 
-      {/* Tab Content */}
       {tab === "analysis" && (
         <div className="analysis-section">
           {config.category === "polygon" && <AreaCard onAreaCalculated={setArea} />}
           {config.category === "line" && (
             <LineCard
-              // Updated callback: now only receives the line length.
               onLineDimensionsCalculated={(length: number) => setLineLength(length)}
             />
           )}
           {config.category === "point" && <PointCard onPointCountCalculated={setPointCount} />}
           <SketchAttributesCard autoHide />
 
-          {/* User Inputs */}
           <div className="input-card">
             <h3 className="text-lg font-bold mb-2">User Inputs</h3>
             <label className="block mb-4">
@@ -119,7 +110,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
             </label>
           </div>
 
-          {/* Analysis Cards */}
           {(area || lineLength || pointCount) && budget && rainCaptureGoal && (
             <>
               <div className="result-card">

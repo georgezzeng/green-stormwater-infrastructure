@@ -5,12 +5,9 @@ import { PointResults } from "../functions/calculatePoint.ts";
 import Translator from "../components/TranslatorAsync.js";
 
 interface PointCardProps {
-  onPointCountCalculated: (count: number) => void; // Callback to pass point count to parent
+  onPointCountCalculated: (count: number) => void;
 }
 
-/**
- * PointCard component
- */
 export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) => {
   const { t } = useTranslation();
   const titleTrans = t("PointCard title", "Point Count Report");
@@ -20,7 +17,7 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
       <ResultsCard title={titleTrans} functionName="calculatePoint">
         {(data: PointResults) => {
           const count = data.count;
-          onPointCountCalculated(count); // Pass the point count to the parent
+          onPointCountCalculated(count);
 
           return (
             <>

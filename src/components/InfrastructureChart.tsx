@@ -14,9 +14,9 @@ import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructur
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend);
 
 interface InfrastructureChartProps {
-  area?: number; // Area in square feet (for polygons)
-  pointCount?: number; // Number of points (for trees)
-  lineLength?: number; // Length in feet (for lines)
+  area?: number;
+  pointCount?: number;
+  lineLength?: number;
   infrastructureType: keyof typeof infrastructureTypes;
 }
 
@@ -26,10 +26,8 @@ const InfrastructureChart: React.FC<InfrastructureChartProps> = ({
   lineLength,
   infrastructureType,
 }) => {
-  // Get configuration for the selected infrastructure type
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
 
-  // Determine the base value (area, pointCount, or lineLength) based on category
   let baseValue = 0;
   if (config.category === "polygon" && area) {
     baseValue = area;
@@ -39,13 +37,11 @@ const InfrastructureChart: React.FC<InfrastructureChartProps> = ({
     baseValue = lineLength;
   }
 
-  // Calculate total values based on the base value
   const totalCost = baseValue * config.costPerSqFt;
   const capitalCost = baseValue * config.capitalCostPerSqFt;
   const maintenanceCost = baseValue * config.maintenanceCostPerSqFt;
   const totalCapacityIncrease = baseValue * config.capacityIncreasePerSqFt;
 
-  // Data for Cost Breakdown Doughnut Chart
   const costData = {
     labels: ["Capital Cost", "Maintenance Cost"],
     datasets: [
@@ -58,7 +54,6 @@ const InfrastructureChart: React.FC<InfrastructureChartProps> = ({
     ],
   };
 
-  // Data for Capacity Increase Bar Chart
   const capacityData = {
     labels: ["Total Capacity Increase"],
     datasets: [

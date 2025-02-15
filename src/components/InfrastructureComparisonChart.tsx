@@ -14,9 +14,9 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 interface InfrastructureComparisonChartProps {
   selectedType: keyof typeof infrastructureTypes;
-  area?: number; // Area in square feet (for polygons)
-  pointCount?: number; // Number of points (for trees)
-  lineLength?: number; // Length in feet (for lines)
+  area?: number;
+  pointCount?: number;
+  lineLength?: number;
 }
 
 const InfrastructureComparisonChart: React.FC<InfrastructureComparisonChartProps> = ({
@@ -27,14 +27,12 @@ const InfrastructureComparisonChart: React.FC<InfrastructureComparisonChartProps
 }) => {
   const selectedConfig = infrastructureTypes[selectedType];
 
-  // Determine the base value for calculations
   const baseValue = selectedConfig.category === "polygon"
     ? area ?? 0
     : selectedConfig.category === "point"
     ? pointCount ?? 0
     : lineLength ?? 0;
 
-  // Generate data for all infrastructure types
   const labels = Object.keys(infrastructureTypes);
   const data = {
     labels,

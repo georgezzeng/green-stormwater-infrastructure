@@ -8,12 +8,9 @@ import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 const Number = new Intl.NumberFormat("en", { style: "decimal" });
 
 interface AreaCardProps {
-  onAreaCalculated: (area: number) => void; // Callback to pass area to parent
+  onAreaCalculated: (area: number) => void;
 }
 
-/**
- * AreaCard component
- */
 export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
   const { t } = useTranslation();
   const titleTrans = t("AreaCard title", "Area Report");
@@ -23,7 +20,7 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
       <ResultsCard title={titleTrans} functionName="calculateArea">
         {(data: AreaResults) => {
           const area = roundDecimal(data.area, 2);
-          onAreaCalculated(area); // Pass the area up to the parent
+          onAreaCalculated(area);
           
           return (
             <>

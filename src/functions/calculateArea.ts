@@ -25,18 +25,14 @@ async function calculateArea(
   // console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
 
   const geographyId = getFirstFromParam("geographyIds", extraParams);
-  // Get geography features, falling back to geography assigned to default-boundary group
   const curGeography = project.getGeographyById(geographyId, {
     fallbackGroup: "default-boundary",
   });
 
-  // Support sketches crossing antimeridian
   const splitSketch = splitSketchAntimeridian(sketch);
 
-  // Clip to portion of sketch within current geography
   const clippedSketch = await clipToGeography(splitSketch, curGeography);
 
-  // Calculate the area in square meters and convert to square feet (1 square meter = 10.7639 square feet)
   const areaInSquareFeet = turfArea(clippedSketch) * 10.7639;
 
   return {

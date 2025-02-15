@@ -8,10 +8,9 @@ import {
 } from "@seasketch/geoprocessing";
 
 export interface PointResults {
-  count: number; // Total number of points
+  count: number;
 }
 
-// Helper to count points in a single feature
 function countPointsInFeature(feature: any): number {
   if (!feature.geometry) return 0;
 
@@ -31,7 +30,6 @@ async function calculatePoint(
   console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
   let count = 0;
 
-  // Check if the sketch is a FeatureCollection or a single Feature
   if (sketch.type === "FeatureCollection" || Array.isArray(sketch.features)) {
     for (const feature of sketch.features) {
       count += countPointsInFeature(feature);
