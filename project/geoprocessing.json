@@ -118,11 +118,5 @@
     "src/functions/calculatePerim.ts",
     "src/functions/calculatePoint.ts",
     "src/functions/calculateLength.ts"
-  ],
-  "geoprocessingServices": {
-    "calculateArea": {},
-    "calculatePerim": {},
-    "calculatePoint": {},
-    "calculateLength": {}
-  }
+  ]
 }
