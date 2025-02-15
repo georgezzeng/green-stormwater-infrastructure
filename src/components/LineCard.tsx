@@ -1,7 +1,7 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
-import { LengthResults } from "../functions/calculatePerim.ts"; // Updated interface import
+import { LengthResults } from "../functions/calculateLength"; // Updated interface import
 import Translator from "../components/TranslatorAsync.js";
 import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 
