@@ -28,6 +28,6 @@ export default new GeoprocessingHandler(calculateLength, {
   description: "Calculates the length of the sketch in feet",
   timeout: 60,
   memory: 1024,
-  executionMode: "sync",
+  executionMode: "async",
   requiresProperties: [],
 });
