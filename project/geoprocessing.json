@@ -69,7 +69,7 @@
       "source": "src/clients/RaisedBedReport.tsx"
     },
     {
-      "name": "VegetationF"ilterStripReport,
+      "name": "VegetationFilterStripReport",
       "description": "Vegetation Filter Strip Report based on Length",
       "source": "src/clients/VegetationFilterStripReport.tsx"
     },
