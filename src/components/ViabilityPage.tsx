@@ -3,7 +3,7 @@ import { AreaCard } from "./AreaCard.tsx";
 import { LineCard } from "./LineCard.tsx"; // This calls calculateLength
 import { PointCard } from "./PointCard.tsx";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
-import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
+import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.tsx";
 import RainCaptureProgress from "./RainCaptureProgress.tsx";
 import CostVsBudgetBar from "./CostVsBudgetBar.tsx";
 import RemainingBudgetIndicator from "./RemainingBudgetIndicator.tsx";
@@ -20,9 +20,8 @@ interface ViabilityPageProps {
 export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType, featureId }) => {
   // For polygon analysis.
   const [area, setArea] = useState<number | null>(null);
-  // For swale analysis (line), store both dimensions.
+  // For swale (line) analysis.
   const [lineLength, setLineLength] = useState<number | null>(null);
-  const [width, setWidth] = useState<number | null>(null);
   // For point analysis.
   const [pointCount, setPointCount] = useState<number | null>(null);
   const [budget, setBudget] = useState<number | null>(null);
@@ -36,11 +35,10 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     const savedData = JSON.parse(localStorage.getItem(featureId) || "{}");
     if (savedData.budget) setBudget(savedData.budget);
     if (savedData.rainCaptureGoal) setRainCaptureGoal(savedData.rainCaptureGoal);
-    if (savedData.width != null) setWidth(savedData.width);
   }, [featureId]);
 
   const saveData = () => {
-    const data = { budget, rainCaptureGoal, width };
+    const data = { budget, rainCaptureGoal};
     localStorage.setItem(featureId, JSON.stringify(data));
   };
 
@@ -48,7 +46,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     if (budget !== null && rainCaptureGoal !== null) {
       saveData();
     }
-  }, [budget, rainCaptureGoal, width]);
+  }, [budget, rainCaptureGoal]);
 
   // Calculate cost and capacity.
   let estimatedTotalCost = 0;
@@ -58,7 +56,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     estimatedTotalCost = area * (config.costPerSqFt || 0);
     capacityIncrease = area * (config.capacityIncreasePerSqFt || 0);
   } else if (config.category === "line" && lineLength) {
-    // Use the longer side (lineLength) for calculations.
     estimatedTotalCost = lineLength * (config.costPerFt || 0);
     capacityIncrease = lineLength * (config.capacityIncreasePerFt || 0);
   } else if (config.category === "point" && pointCount) {
@@ -90,16 +87,8 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
           {config.category === "polygon" && <AreaCard onAreaCalculated={setArea} />}
           {config.category === "line" && (
             <LineCard
-              // Callback to receive dimensions from the backend.
-              onLineDimensionsCalculated={(backendLength: number, backendWidth: number) => {
-                setLineLength(backendLength);
-                // Update width only if the user hasn't overridden it.
-                if (width == null) {
-                  setWidth(backendWidth);
-                }
-              }}
-              // Only pass extraParams if width is not null.
-              extraParams={width != null ? { overrideWidth: width } : {}}
+              // Updated callback: now only receives the line length.
+              onLineDimensionsCalculated={(length: number) => setLineLength(length)}
             />
           )}
           {config.category === "point" && <PointCard onPointCountCalculated={setPointCount} />}
@@ -128,21 +117,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
                 className="styled-input"
               />
             </label>
-            {config.category === "line" && (
-              <label className="block mb-4">
-                <span className="text-gray-700">Swale Width (ft):</span>
-                <input
-                  type="number"
-                  value={width ?? ""}
-                  onChange={(e) => {
-                    const newWidth = Number(e.target.value);
-                    setWidth(isNaN(newWidth) ? null : newWidth);
-                  }}
-                  placeholder="Enter swale width"
-                  className="styled-input"
-                />
-              </label>
-            )}
           </div>
 
           {/* Analysis Cards */}
