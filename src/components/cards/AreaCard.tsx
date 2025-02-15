@@ -1,8 +1,8 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
-import { AreaResults } from "../functions/calculateArea.js";
-import Translator from "../components/TranslatorAsync.js";
+import { AreaResults } from "../../functions/calculateArea.ts";
+import Translator from "../TranslatorAsync.tsx";
 import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 
 const Number = new Intl.NumberFormat("en", { style: "decimal" });

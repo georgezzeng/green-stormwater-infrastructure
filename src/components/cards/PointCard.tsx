@@ -1,8 +1,8 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
-import { PointResults } from "../functions/calculatePoint.ts";
-import Translator from "../components/TranslatorAsync.js";
+import { PointResults } from "../../functions/calculatePoint.ts";
+import Translator from "../TranslatorAsync.tsx";
 
 interface PointCardProps {
   onPointCountCalculated: (count: number) => void;
