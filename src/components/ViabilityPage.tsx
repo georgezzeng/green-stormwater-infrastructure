@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { AreaCard } from "./cards/AreaCard.tsx";
-import { LineCard } from "./cards/LineCard.tsx";
-import { PointCard } from "./cards/PointCard.tsx";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
 import FeatureDetailsPage from "./FeatureDetailsPage.tsx";
@@ -10,12 +7,11 @@ import "../styles/styles.css";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
-  featureId: string;
 }
 
 type TabOption = "cost" | "capture" | "details";
 
-export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType, featureId }) => {
+export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType }) => {
   const [area, setArea] = useState<number | null>(null);
   const [lineLength, setLineLength] = useState<number | null>(null);
   const [pointCount, setPointCount] = useState<number | null>(null);
@@ -25,51 +21,29 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
 
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem(featureId) || "{}");
-    if (savedData.budget) setBudget(savedData.budget);
-    if (savedData.rainCaptureGoal) setRainCaptureGoal(savedData.rainCaptureGoal);
-  }, [featureId]);
-
-  const saveData = () => {
-    const data = { budget, rainCaptureGoal };
-    localStorage.setItem(featureId, JSON.stringify(data));
-  };
-
-  useEffect(() => {
-    if (budget !== null && rainCaptureGoal !== null) {
-      saveData();
-    }
-  }, [budget, rainCaptureGoal]);
-
   const costContent = (
     <div>
-      {config.category === "polygon" && <AreaCard onAreaCalculated={setArea} />}
-      {config.category === "line" && (
-        <LineCard onLineDimensionsCalculated={(length: number) => setLineLength(length)} />
-      )}
-      {config.category === "point" && <PointCard onPointCountCalculated={setPointCount} />}
       <SketchAttributesCard autoHide />
 
-      <div className="input-card">
-        <label className="block mb-4">
-          <span className="text-gray-700">Budget (USD):</span>
+      <div className="input-card flex flex-row space-x-4 w-full">
+        <label className="flex flex-col w-1/2">
+          <span className="text-gray-700 text-sm">Budget (USD):</span>
           <input
             type="number"
             value={budget ?? ""}
             onChange={(e) => setBudget(Number(e.target.value))}
-            placeholder="Enter your budget"
-            className="styled-input"
+            placeholder="Budget"
+            className="styled-input text-sm p-2"
           />
         </label>
-        <label className="block mb-4">
-          <span className="text-gray-700">Rain Capture Goal (gallons):</span>
+        <label className="flex flex-col w-1/2">
+          <span className="text-gray-700 text-sm">Rain Capture Goal (gallons):</span>
           <input
             type="number"
             value={rainCaptureGoal ?? ""}
             onChange={(e) => setRainCaptureGoal(Number(e.target.value))}
-            placeholder="Enter rain capture goal"
-            className="styled-input"
+            placeholder="Rain Capture"
+            className="styled-input text-sm p-2"
           />
         </label>
       </div>
@@ -85,7 +59,14 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       contentToRender = <CaptureAnalysis />;
       break;
     case "details":
-      contentToRender = <FeatureDetailsPage infrastructureType={infrastructureType} />;
+      contentToRender = (
+        <FeatureDetailsPage 
+          infrastructureType={infrastructureType}
+          onAreaCalculated={setArea}
+          onLineDimensionsCalculated={(length: number) => setLineLength(length)}
+          onPointCountCalculated={setPointCount}
+        />
+      );
       break;
     default:
       contentToRender = costContent;

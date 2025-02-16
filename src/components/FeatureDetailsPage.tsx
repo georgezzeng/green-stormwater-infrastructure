@@ -1,21 +1,39 @@
 import React from "react";
 import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
+import { AreaCard } from "./cards/AreaCard.tsx";
+import { LineCard } from "./cards/LineCard.tsx";
+import { PointCard } from "./cards/PointCard.tsx";
 
 interface FeatureDetailsPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
+  onAreaCalculated?: (area: number) => void;
+  onLineDimensionsCalculated?: (length: number) => void;
+  onPointCountCalculated?: (count: number) => void;
 }
 
-const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({ infrastructureType }) => {
+const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({ 
+  infrastructureType, 
+  onAreaCalculated, 
+  onLineDimensionsCalculated, 
+  onPointCountCalculated 
+}) => {
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
 
   return (
     <div>
       <h2>{config.name} Details</h2>
-      <p>Category: {config.category}</p>
-      <p>Cost Per Square Foot: ${config.costPerSqFt}</p>
-      <p>Capital Cost Per Square Foot: ${config.capitalCostPerSqFt}</p>
-      <p>Maintenance Cost Per Square Foot: ${config.maintenanceCostPerSqFt}</p>
-      <p>Capacity Increase Per Square Foot: {config.capacityIncreasePerSqFt} gallons</p>
+      
+      <div className="cards-section">
+        {config.category === "polygon" && onAreaCalculated && (
+          <AreaCard onAreaCalculated={onAreaCalculated} />
+        )}
+        {config.category === "line" && onLineDimensionsCalculated && (
+          <LineCard onLineDimensionsCalculated={onLineDimensionsCalculated} />
+        )}
+        {config.category === "point" && onPointCountCalculated && (
+          <PointCard onPointCountCalculated={onPointCountCalculated} />
+        )}
+      </div>
     </div>
   );
 };
