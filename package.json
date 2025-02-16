@@ -86,10 +86,5 @@
   "homepage": "https://github.com/georgezzeng/green-stormwater-infrastructure.git#readme",
   "bugs": {
     "url": "https://github.com/georgezzeng/green-stormwater-infrastructure.git/issues"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.15"
   }
 }
