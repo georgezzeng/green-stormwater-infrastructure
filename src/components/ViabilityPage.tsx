@@ -53,14 +53,21 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       contentToRender = costContent;
       break;
     case "capture":
-      contentToRender = <CaptureAnalysis />;
+      contentToRender = (
+        <CaptureAnalysis
+          budget={budget}
+          setBudget={setBudget}
+          rainCaptureGoal={rainCaptureGoal}
+          setRainCaptureGoal={setRainCaptureGoal}
+        />
+      );
       break;
     case "details":
       contentToRender = (
         <FeatureDetailsPage 
           infrastructureType={infrastructureType}
           onAreaCalculated={setArea}
-          onLineDimensionsCalculated={(length: number) => setLineLength(length)}
+          onLineDimensionsCalculated={setLineLength}
           onPointCountCalculated={setPointCount}
         />
       );
@@ -76,13 +83,13 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
           className={`navbar-tab ${tab === "cost" ? "active-tab" : ""}`}
           onClick={() => setTab("cost")}
         >
-          Cost Analysis
+          Cost
         </button>
         <button
           className={`navbar-tab ${tab === "capture" ? "active-tab" : ""}`}
           onClick={() => setTab("capture")}
         >
-          Capture Analysis
+          Capture
         </button>
         <button
           className={`navbar-tab ${tab === "details" ? "active-tab" : ""}`}

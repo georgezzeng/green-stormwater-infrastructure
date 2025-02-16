@@ -26,7 +26,7 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
 
   return (
     <div>
-      <h2>{config.name} Details</h2>
+      <h2 className="centered-h2">{config.name} Details</h2>
       
       <div className="cards-section">
         {config.category === "polygon" && onAreaCalculated && (

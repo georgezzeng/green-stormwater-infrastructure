@@ -11,8 +11,10 @@
 }
 
 .navbar-tab {
+  width: 120px; /* force a fixed width */
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
+  text-align: center;
   border: 2px solid #000000;
   border-radius: 4px;
   cursor: pointer;
@@ -89,6 +91,11 @@
 
 .details-table th {
   background-color: #f2f2f2;
+}
+
+/* Center the header in the details page */
+.centered-h2 {
+  text-align: center;
 }
 
 /* General Typography */
