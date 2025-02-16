@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
-import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
+import { infrastructureTypes } from "../data/infrastructureData.ts";
 import FeatureDetailsPage from "./FeatureDetailsPage.tsx";
 import CaptureAnalysis from "./CaptureAnalysis.tsx";
 import "../styles/styles.css";
@@ -19,33 +19,30 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const [rainCaptureGoal, setRainCaptureGoal] = useState<number | null>(null);
   const [tab, setTab] = useState<TabOption>("cost");
 
-  const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
-
   const costContent = (
     <div>
       <SketchAttributesCard autoHide />
-
-      <div className="input-card flex flex-row space-x-4 w-full">
-        <label className="flex flex-col w-1/2">
-          <span className="text-gray-700 text-sm">Budget (USD):</span>
+      <div className="input-row">
+        <div className="input-group">
+          <label className="input-label">Budget (USD):</label>
           <input
             type="number"
             value={budget ?? ""}
             onChange={(e) => setBudget(Number(e.target.value))}
             placeholder="Budget"
-            className="styled-input text-sm p-2"
+            className="styled-input small-input"
           />
-        </label>
-        <label className="flex flex-col w-1/2">
-          <span className="text-gray-700 text-sm">Rain Capture Goal (gallons):</span>
+        </div>
+        <div className="input-group">
+          <label className="input-label">Rain Capture Goal (gallons):</label>
           <input
             type="number"
             value={rainCaptureGoal ?? ""}
             onChange={(e) => setRainCaptureGoal(Number(e.target.value))}
             placeholder="Rain Capture"
-            className="styled-input text-sm p-2"
+            className="styled-input small-input"
           />
-        </label>
+        </div>
       </div>
     </div>
   );

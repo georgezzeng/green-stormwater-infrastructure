@@ -19,6 +19,11 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
 }) => {
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
 
+  // Only display practices of the same category as the current analysis.
+  const filteredPractices = Object.entries(infrastructureTypes).filter(
+    ([, conf]) => conf.category === config.category
+  );
+
   return (
     <div>
       <h2>{config.name} Details</h2>
@@ -34,6 +39,42 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
           <PointCard onPointCountCalculated={onPointCountCalculated} />
         )}
       </div>
+
+      <table className="details-table">
+        <caption>Infrastructure Practices ({config.category.toUpperCase()})</caption>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>Capital Cost</th>
+            <th>Capacity Increase</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredPractices.map(([key, conf]) => {
+            let capitalCost, capacityIncrease, unit;
+            if (conf.category === "polygon") {
+              capitalCost = conf.capitalCostPerSqFt;
+              capacityIncrease = conf.capacityIncreasePerSqFt;
+              unit = "per SqFt";
+            } else if (conf.category === "line") {
+              capitalCost = conf.capitalCostPerFt;
+              capacityIncrease = conf.capacityIncreasePerFt;
+              unit = "per Ft";
+            } else if (conf.category === "point") {
+              capitalCost = conf.capitalCostPerPoint;
+              capacityIncrease = conf.capacityIncreasePerPoint;
+              unit = "per Point";
+            }
+            return (
+              <tr key={key}>
+                <td>{conf.name}</td>
+                <td>{capitalCost} {unit}</td>
+                <td>{capacityIncrease} {unit}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
