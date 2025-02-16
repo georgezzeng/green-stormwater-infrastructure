@@ -52,7 +52,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       <SketchAttributesCard autoHide />
 
       <div className="input-card">
-        <h3 className="text-lg font-bold mb-2">User Inputs</h3>
         <label className="block mb-4">
           <span className="text-gray-700">Budget (USD):</span>
           <input
