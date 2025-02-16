@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+// ViabilityPage.tsx
+import React, { useState, useEffect } from "react";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 import { infrastructureTypes } from "../data/infrastructureData.ts";
 import FeatureDetailsPage from "./FeatureDetailsPage.tsx";
-import CaptureAnalysis from "./CaptureAnalysis.tsx";
+import GaugeChart from "./charts/GaugeChart.tsx";
 import "../styles/styles.css";
+import CaptureAnalysisPage from "./CaptureAnalysis.tsx";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
@@ -15,9 +17,26 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const [area, setArea] = useState<number | null>(null);
   const [lineLength, setLineLength] = useState<number | null>(null);
   const [pointCount, setPointCount] = useState<number | null>(null);
-  const [budget, setBudget] = useState<number | null>(null);
-  const [rainCaptureGoal, setRainCaptureGoal] = useState<number | null>(null);
+  const [budget, setBudget] = useState<number | null>(0);
+  const [rainCaptureGoal, setRainCaptureGoal] = useState<number | null>(0);
   const [tab, setTab] = useState<TabOption>("cost");
+
+  // Load shared state from localStorage on mount
+  useEffect(() => {
+    const storedBudget = localStorage.getItem("budget");
+    const storedCapture = localStorage.getItem("rainCaptureGoal");
+    if (storedBudget) setBudget(Number(storedBudget));
+    if (storedCapture) setRainCaptureGoal(Number(storedCapture));
+  }, []);
+
+  // Save shared state when changed
+  useEffect(() => {
+    localStorage.setItem("budget", String(budget));
+    localStorage.setItem("rainCaptureGoal", String(rainCaptureGoal));
+  }, [budget, rainCaptureGoal]);
+
+  // For the cost page, we assume budget represents the progress percentage.
+  const budgetProgress = budget ?? 0;
 
   const costContent = (
     <div>
@@ -44,6 +63,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
           />
         </div>
       </div>
+      <GaugeChart value={budgetProgress} max={100} title="Budget Spent" />
     </div>
   );
 
@@ -53,18 +73,17 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       contentToRender = costContent;
       break;
     case "capture":
-      contentToRender = (
-        <CaptureAnalysis
-          budget={budget}
-          setBudget={setBudget}
-          rainCaptureGoal={rainCaptureGoal}
-          setRainCaptureGoal={setRainCaptureGoal}
-        />
-      );
+      // For now, reuse costContent if needed. (Alternatively, you could route to the CaptureAnalysisPage.)
+      contentToRender = (<CaptureAnalysisPage
+        budget={budget}
+        setBudget={setBudget}
+        rainCaptureGoal={rainCaptureGoal}
+        setRainCaptureGoal={setRainCaptureGoal}
+      />)
       break;
     case "details":
       contentToRender = (
-        <FeatureDetailsPage 
+        <FeatureDetailsPage
           infrastructureType={infrastructureType}
           onAreaCalculated={setArea}
           onLineDimensionsCalculated={setLineLength}
@@ -99,9 +118,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
         </button>
       </div>
 
-      <div className="content-section">
-        {contentToRender}
-      </div>
+      <div className="content-section">{contentToRender}</div>
     </div>
   );
 };
