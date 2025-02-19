@@ -1,3 +1,4 @@
+// FeatureDetailsPage.tsx
 import React from "react";
 import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
 import { AreaCard } from "./cards/AreaCard.tsx";
@@ -19,10 +20,13 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
 }) => {
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
 
-  // Only display practices of the same category as the current analysis.
-  const filteredPractices = Object.entries(infrastructureTypes).filter(
-    ([, conf]) => conf.category === config.category
-  );
+  // Instead of showing all practices of the same category,
+  // we only show the one currently being analyzed.
+  const unit = config.category === "polygon"
+    ? "per SqFt"
+    : config.category === "line"
+    ? "per Ft"
+    : "per Point";
 
   return (
     <div>
@@ -41,7 +45,7 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
       </div>
 
       <table className="details-table">
-        <caption>Infrastructure Practices ({config.category.toUpperCase()})</caption>
+        <caption>Infrastructure Practice ({config.category.toUpperCase()})</caption>
         <thead>
           <tr>
             <th>Practice</th>
@@ -50,29 +54,29 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
           </tr>
         </thead>
         <tbody>
-          {filteredPractices.map(([key, conf]) => {
-            let capitalCost, capacityIncrease, unit;
-            if (conf.category === "polygon") {
-              capitalCost = conf.capitalCostPerSqFt;
-              capacityIncrease = conf.capacityIncreasePerSqFt;
-              unit = "per SqFt";
-            } else if (conf.category === "line") {
-              capitalCost = conf.capitalCostPerFt;
-              capacityIncrease = conf.capacityIncreasePerFt;
-              unit = "per Ft";
-            } else if (conf.category === "point") {
-              capitalCost = conf.capitalCostPerPoint;
-              capacityIncrease = conf.capacityIncreasePerPoint;
-              unit = "per Point";
-            }
-            return (
-              <tr key={key}>
-                <td>{conf.name}</td>
-                <td>{capitalCost} {unit}</td>
-                <td>{capacityIncrease} {unit}</td>
-              </tr>
-            );
-          })}
+          <tr>
+            <td>{config.name}</td>
+            <td>
+              {config.category === "polygon" && config.capitalCostPerSqFt !== undefined
+                ? config.capitalCostPerSqFt.toFixed(2)
+                : config.category === "line" && config.capitalCostPerFt !== undefined
+                ? config.capitalCostPerFt.toFixed(2)
+                : config.capitalCostPerPoint !== undefined
+                ? config.capitalCostPerPoint.toFixed(2)
+                : ""}
+              {" "}{unit}
+            </td>
+            <td>
+              {config.category === "polygon" && config.capacityIncreasePerSqFt !== undefined
+                ? config.capacityIncreasePerSqFt.toFixed(2)
+                : config.category === "line" && config.capacityIncreasePerFt !== undefined
+                ? config.capacityIncreasePerFt.toFixed(2)
+                : config.capacityIncreasePerPoint !== undefined
+                ? config.capacityIncreasePerPoint.toFixed(2)
+                : ""}
+              {" "}{unit}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

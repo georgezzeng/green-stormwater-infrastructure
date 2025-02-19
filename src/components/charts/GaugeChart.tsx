@@ -51,7 +51,7 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title }) => {
         },
         detail: {
           valueAnimation: true,
-          formatter: "{value}%",
+          formatter: (val: number) => `${val.toFixed(2)}%`,
           color: "auto",
           fontSize: 20,
         },

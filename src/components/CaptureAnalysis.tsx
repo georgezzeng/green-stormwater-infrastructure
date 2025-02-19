@@ -1,5 +1,5 @@
 // CaptureAnalysisPage.tsx
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import GaugeChart from "./charts/GaugeChart.tsx";
 import "../styles/styles.css";
 
@@ -8,6 +8,8 @@ interface CaptureAnalysisProps {
   setBudget: (value: number) => void;
   rainCaptureGoal: number | null;
   setRainCaptureGoal: (value: number) => void;
+  // New prop for computed capture progress percentage
+  captureProgress: number;
 }
 
 const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
@@ -15,8 +17,8 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
   setBudget,
   rainCaptureGoal,
   setRainCaptureGoal,
+  captureProgress,
 }) => {
-
   // Load shared state from localStorage on mount
   useEffect(() => {
     const storedBudget = localStorage.getItem("budget");
@@ -30,9 +32,6 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
     localStorage.setItem("budget", String(budget));
     localStorage.setItem("rainCaptureGoal", String(rainCaptureGoal));
   }, [budget, rainCaptureGoal]);
-
-  // For the capture page, assume rainCaptureGoal represents the capture progress percentage.
-  const captureProgress = rainCaptureGoal ?? 0;
 
   return (
     <div className="capture-page">
@@ -58,7 +57,8 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
           />
         </div>
       </div>
-      <GaugeChart value={captureProgress} max={200} title="Capture Progress" />
+      {/* Updated gauge now uses the computed capture progress */}
+      <GaugeChart value={captureProgress} max={100} title="Capture Progress" />
     </div>
   );
 };
