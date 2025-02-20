@@ -14,9 +14,14 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
 
   return (
     <>
-      <ResultsCard title={titleTrans} functionName="calculatePoint">
+      <ResultsCard 
+        title={titleTrans} 
+        functionName="calculatePoint"
+        extraParams={{ geometryTypes: ["Point"] }}
+      >
         {(data: PointResults) => {
           const count = data.count;
+          console.log(count);
           onPointCountCalculated(count);
 
           return (

@@ -22,14 +22,34 @@ async function calculateArea(
     | SketchCollection<Polygon | MultiPolygon>,
   extraParams: DefaultExtraParams = {}
 ): Promise<AreaResults> {
-  // console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
+  console.log("calculateArea: Extra Params:", extraParams);
+  const allowedTypes = extraParams.geometryTypes as string[] | undefined;
+  let filteredSketch = sketch;
+  
+  if (allowedTypes) {
+    if (sketch.type === "FeatureCollection") {
+      console.log("calculateArea: Original feature types:", sketch.features.map((f: any) => f.geometry.type));
+      filteredSketch = {
+        ...sketch,
+        features: sketch.features.filter((feature: any) =>
+          allowedTypes.includes(feature.geometry.type)
+        ),
+      };
+      console.log("calculateArea: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry.type));
+    } else {
+      // single feature case
+      if (!allowedTypes.includes(sketch.geometry.type)) {
+        throw new Error(`calculateArea: unsupported geometry type: ${sketch.geometry.type}`);
+      }
+    }
+  }
 
   const geographyId = getFirstFromParam("geographyIds", extraParams);
   const curGeography = project.getGeographyById(geographyId, {
     fallbackGroup: "default-boundary",
   });
 
-  const splitSketch = splitSketchAntimeridian(sketch);
+  const splitSketch = splitSketchAntimeridian(filteredSketch);
 
   const clippedSketch = await clipToGeography(splitSketch, curGeography);
 

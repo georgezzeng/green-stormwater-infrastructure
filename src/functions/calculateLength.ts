@@ -15,7 +15,28 @@ async function calculateLength(
   sketch: Sketch<LineString | MultiLineString> | SketchCollection<LineString | MultiLineString>,
   extraParams: DefaultExtraParams = {}
 ): Promise<LengthResults> {
-  const lengthInKilometers = turfLength(sketch, { units: "kilometers" });
+  console.log("calculateLength: Extra Params:", extraParams);
+  const allowedTypes = extraParams.geometryTypes as string[] | undefined;
+  let filteredSketch = sketch;
+  
+  if (allowedTypes) {
+    if (sketch.type === "FeatureCollection") {
+      console.log("calculateLength: Original feature types:", sketch.features.map((f: any) => f.geometry.type));
+      filteredSketch = {
+        ...sketch,
+        features: sketch.features.filter((feature: any) =>
+          allowedTypes.includes(feature.geometry.type)
+        ),
+      };
+      console.log("calculateLength: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry.type));
+    } else {
+      if (!allowedTypes.includes(sketch.geometry.type)) {
+        throw new Error(`calculateLength: unsupported geometry type: ${sketch.geometry.type}`);
+      }
+    }
+  }
+  
+  const lengthInKilometers = turfLength(filteredSketch, { units: "kilometers" });
   const lengthInFeet = lengthInKilometers * 3280.84;
 
   return { length: lengthInFeet };

@@ -17,9 +17,15 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
 
   return (
     <>
-      <ResultsCard title={titleTrans} functionName="calculateArea">
+      <ResultsCard 
+        title={titleTrans} 
+        functionName="calculateArea" 
+        extraParams={{ geometryTypes: ["Polygon", "MultiPolygon"] }}
+      >
         {(data: AreaResults) => {
+          console.log("Data from calculateArea:", data);
           const area = roundDecimal(data.area, 2);
+          console.log(area);
           onAreaCalculated(area);
           
           return (
@@ -37,7 +43,6 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
     </>
   );
 };
-
 
 export const AreaCardReportClient = () => {
   return (

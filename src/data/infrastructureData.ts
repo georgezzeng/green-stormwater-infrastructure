@@ -1,4 +1,4 @@
-export type InfrastructureCategory = "polygon" | "line" | "point";
+export type InfrastructureCategory = "polygon" | "line" | "point" | "collection";
 
 export interface InfrastructureConfig {
   name: string;
@@ -15,6 +15,9 @@ export interface InfrastructureConfig {
   // Only for points
   capitalCostPerPoint?: number;
   capacityIncreasePerPoint?: number;
+
+  capitalCostPerUnit?: number;
+  capacityIncreasePerUnit?: number;
 }
 
 export const infrastructureTypes: Record<string, InfrastructureConfig> = {
@@ -143,5 +146,13 @@ export const infrastructureTypes: Record<string, InfrastructureConfig> = {
     category: "polygon",
     capacityIncreasePerSqFt: 1.6,
     capitalCostPerSqFt: 8.68,
+  },
+  collection: {
+    name: "Collection",
+    category: "collection", // this new category value distinguishes it from polygon/line/point
+    // You may not need cost/capacity factors at the top level for a collection,
+    // but if you have defaults for aggregations, you can include them here.
+    capitalCostPerUnit: 0,
+    capacityIncreasePerUnit: 0,
   },
 };

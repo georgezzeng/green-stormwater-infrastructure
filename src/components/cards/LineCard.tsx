@@ -17,9 +17,14 @@ export const LineCard: React.FC<LineCardProps> = ({ onLineDimensionsCalculated, 
   const titleTrans = t("LineCard title", "Line Report");
 
   return (
-    <ResultsCard title={titleTrans} functionName="calculateLength" extraParams={extraParams}>
+    <ResultsCard 
+      title={titleTrans} 
+      functionName="calculateLength" 
+      extraParams={{ geometryTypes: ["LineString", "MultiLineString"], ...extraParams }}
+    >
       {(data: LengthResults) => {
         const length = roundDecimal(data.length, 2);
+        console.log(length);
         onLineDimensionsCalculated(length);
         return (
           <p>

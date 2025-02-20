@@ -107,6 +107,11 @@
       "name": "PermeableStreetsReport",
       "description": "Permeable Streets Report based on Area",
       "source": "src/clients/PermeableStreetsReport.tsx"
+    },
+    {
+      "name": "CollectionReport",
+      "description": "Colletion Report",
+      "source": "src/clients/CollectionReport.tsx"
     }
   ],
   "preprocessingFunctions": [

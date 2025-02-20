@@ -13,7 +13,6 @@ export interface PointResults {
 
 function countPointsInFeature(feature: any): number {
   if (!feature.geometry) return 0;
-
   const geom = feature.geometry;
   if (geom.type === "Point") {
     return 1;
@@ -27,15 +26,36 @@ async function calculatePoint(
   sketch: Sketch<Point | MultiPoint> | SketchCollection<Point | MultiPoint>,
   extraParams: DefaultExtraParams = {}
 ): Promise<PointResults> {
-  console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
+  console.log("calculatePoint: Extra Params:", extraParams);
+  const allowedTypes = extraParams.geometryTypes as string[] | undefined;
+  let filteredSketch = sketch;
+  
+  if (allowedTypes) {
+    if (sketch.type === "FeatureCollection") {
+      console.log("calculatePoint: Original feature types:", sketch.features.map((f: any) => f.geometry.type));
+      filteredSketch = {
+        ...sketch,
+        features: sketch.features.filter((feature: any) =>
+          allowedTypes.includes(feature.geometry.type)
+        ),
+      };
+      console.log("calculatePoint: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry.type));
+    } else {
+      if (!allowedTypes.includes(sketch.geometry.type)) {
+        throw new Error(`calculatePoint: unsupported geometry type: ${sketch.geometry.type}`);
+      }
+    }
+  }
+
+  console.log("calculatePoint: Filtered Sketch Data Received:", JSON.stringify(filteredSketch, null, 2));
   let count = 0;
 
-  if (sketch.type === "FeatureCollection" || Array.isArray(sketch.features)) {
-    for (const feature of sketch.features) {
+  if (filteredSketch.type === "FeatureCollection" || Array.isArray(filteredSketch.features)) {
+    for (const feature of filteredSketch.features) {
       count += countPointsInFeature(feature);
     }
   } else {
-    count = countPointsInFeature(sketch);
+    count = countPointsInFeature(filteredSketch);
   }
 
   return { count };

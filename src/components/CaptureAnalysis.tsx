@@ -1,37 +1,35 @@
-// CaptureAnalysisPage.tsx
 import React, { useEffect } from "react";
 import GaugeChart from "./charts/GaugeChart.tsx";
 import "../styles/styles.css";
 
 interface CaptureAnalysisProps {
-  budget: number | null;
-  setBudget: (value: number) => void;
-  rainCaptureGoal: number | null;
-  setRainCaptureGoal: (value: number) => void;
-  // New prop for computed capture progress percentage
+  budgetInput: string;
+  setBudgetInput: (value: string) => void;
+  rainCaptureGoalInput: string;
+  setRainCaptureGoalInput: (value: string) => void;
   captureProgress: number;
 }
 
 const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
-  budget,
-  setBudget,
-  rainCaptureGoal,
-  setRainCaptureGoal,
+  budgetInput,
+  setBudgetInput,
+  rainCaptureGoalInput,
+  setRainCaptureGoalInput,
   captureProgress,
 }) => {
-  // Load shared state from localStorage on mount
+  // On mount, load from localStorage.
   useEffect(() => {
     const storedBudget = localStorage.getItem("budget");
     const storedCapture = localStorage.getItem("rainCaptureGoal");
-    if (storedBudget) setBudget(Number(storedBudget));
-    if (storedCapture) setRainCaptureGoal(Number(storedCapture));
+    if (storedBudget) setBudgetInput(storedBudget);
+    if (storedCapture) setRainCaptureGoalInput(storedCapture);
   }, []);
 
-  // Save shared state when changed
+  // Save shared state when changed.
   useEffect(() => {
-    localStorage.setItem("budget", String(budget));
-    localStorage.setItem("rainCaptureGoal", String(rainCaptureGoal));
-  }, [budget, rainCaptureGoal]);
+    localStorage.setItem("budget", budgetInput);
+    localStorage.setItem("rainCaptureGoal", rainCaptureGoalInput);
+  }, [budgetInput, rainCaptureGoalInput]);
 
   return (
     <div className="capture-page">
@@ -40,8 +38,8 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
           <label className="input-label">Budget (USD):</label>
           <input
             type="number"
-            value={budget ?? ""}
-            onChange={(e) => setBudget(Number(e.target.value))}
+            value={budgetInput}
+            onChange={(e) => setBudgetInput(e.target.value)}
             placeholder="Budget"
             className="styled-input small-input"
           />
@@ -50,14 +48,13 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
           <label className="input-label">Rain Capture Goal (gallons):</label>
           <input
             type="number"
-            value={rainCaptureGoal ?? ""}
-            onChange={(e) => setRainCaptureGoal(Number(e.target.value))}
+            value={rainCaptureGoalInput}
+            onChange={(e) => setRainCaptureGoalInput(e.target.value)}
             placeholder="Rain Capture"
             className="styled-input small-input"
           />
         </div>
       </div>
-      {/* Updated gauge now uses the computed capture progress */}
       <GaugeChart value={captureProgress} max={100} title="Capture Progress" />
     </div>
   );

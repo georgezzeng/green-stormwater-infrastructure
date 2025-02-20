@@ -14,15 +14,26 @@ interface ViabilityPageProps {
 type TabOption = "cost" | "capture" | "details";
 
 export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType }) => {
-  // Use string state for the inputs to preserve intermediate user input.
-  const [area, setArea] = useState<number | null>(0);
-  const [lineLength, setLineLength] = useState<number | null>(0);
-  const [pointCount, setPointCount] = useState<number | null>(0);
-  const [budgetInput, setBudgetInput] = useState<string>("100"); // default as string
-  const [rainCaptureGoalInput, setRainCaptureGoalInput] = useState<string>("100"); // default as string
+  // Get configuration and check if we're in collection mode.
+  const config = infrastructureTypes[infrastructureType];
+  const isCollection = config.category === "collection";
+
+  // Single-value states (for non-collection features)
+  const [area, setArea] = useState<number>(0);
+  const [lineLength, setLineLength] = useState<number>(0);
+  const [pointCount, setPointCount] = useState<number>(0);
+
+  // Collection states (arrays)
+  const [polygonAreas, setPolygonAreas] = useState<number[]>([]);
+  const [lineLengths, setLineLengths] = useState<number[]>([]);
+  const [pointCounts, setPointCounts] = useState<number[]>([]);
+
+  // Budget and capture inputs
+  const [budgetInput, setBudgetInput] = useState<string>("100");
+  const [rainCaptureGoalInput, setRainCaptureGoalInput] = useState<string>("100");
   const [tab, setTab] = useState<TabOption>("cost");
 
-  // On mount, load from localStorage.
+  // Load saved budget and capture goal from localStorage.
   useEffect(() => {
     const storedBudget = localStorage.getItem("budget");
     const storedCapture = localStorage.getItem("rainCaptureGoal");
@@ -30,30 +41,91 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     if (storedCapture) setRainCaptureGoalInput(storedCapture);
   }, []);
 
-  // Save shared state when changed.
+  // Save state changes.
   useEffect(() => {
     localStorage.setItem("budget", budgetInput);
     localStorage.setItem("rainCaptureGoal", rainCaptureGoalInput);
   }, [budgetInput, rainCaptureGoalInput]);
 
-  // Convert the string inputs to numbers for calculations.
   const budget = parseFloat(budgetInput) || 0;
   const rainCaptureGoal = parseFloat(rainCaptureGoalInput) || 0;
 
-  // Get the infrastructure config and calculate estimated cost & capture based on geometry values.
-  const config = infrastructureTypes[infrastructureType];
+  // Callback handlers with deduplication.
+  const handleAreaCalculated = (newArea: number) => {
+    console.log("New Area received", newArea);
+    if (isCollection) {
+      setPolygonAreas((prev) => {
+        // Only add if this value isn’t already the last one.
+        if (prev.length > 0 && prev[prev.length - 1] === newArea) {
+          return prev;
+        }
+        return [...prev, newArea];
+      });
+    } else {
+      setArea(newArea);
+    }
+  };
+
+  const handleLineLengthCalculated = (newLength: number) => {
+    if (isCollection) {
+      setLineLengths((prev) => {
+        if (prev.length > 0 && prev[prev.length - 1] === newLength) {
+          return prev;
+        }
+        return [...prev, newLength];
+      });
+    } else {
+      setLineLength(newLength);
+    }
+  };
+
+  const handlePointCountCalculated = (newCount: number) => {
+    if (isCollection) {
+      setPointCounts((prev) => {
+        if (prev.length > 0 && prev[prev.length - 1] === newCount) {
+          return prev;
+        }
+        return [...prev, newCount];
+      });
+    } else {
+      setPointCount(newCount);
+    }
+  };
+
+  // Aggregated totals.
+  const totalArea = polygonAreas.reduce((sum, val) => sum + val, 0);
+  const totalLineLength = lineLengths.reduce((sum, val) => sum + val, 0);
+  const totalPointCount = pointCounts.reduce((sum, val) => sum + val, 0);
+
+  console.log("Polygon Areas:", polygonAreas);
+  console.log("Total Area:", totalArea);
+  console.log("Line Lengths:", lineLengths);
+  console.log("Total Line Length:", totalLineLength);
+  console.log("Point Counts:", pointCounts);
+  console.log("Total Point Count:", totalPointCount);
+
+  // Estimated cost & capture calculations.
   let calculatedCost = 0;
   let calculatedCapture = 0;
 
   if (config.category === "polygon") {
-    calculatedCost = (area ?? 0) * (config.capitalCostPerSqFt || 0);
-    calculatedCapture = (area ?? 0) * (config.capacityIncreasePerSqFt || 0);
+    calculatedCost = area * (config.capitalCostPerSqFt || 0);
+    calculatedCapture = area * (config.capacityIncreasePerSqFt || 0);
   } else if (config.category === "line") {
-    calculatedCost = (lineLength ?? 0) * (config.capitalCostPerFt || 0);
-    calculatedCapture = (lineLength ?? 0) * (config.capacityIncreasePerFt || 0);
+    calculatedCost = lineLength * (config.capitalCostPerFt || 0);
+    calculatedCapture = lineLength * (config.capacityIncreasePerFt || 0);
   } else if (config.category === "point") {
-    calculatedCost = (pointCount ?? 0) * (config.capitalCostPerPoint || 0);
-    calculatedCapture = (pointCount ?? 0) * (config.capacityIncreasePerPoint || 0);
+    calculatedCost = pointCount * (config.capitalCostPerPoint || 0);
+    calculatedCapture = pointCount * (config.capacityIncreasePerPoint || 0);
+  } else if (config.category === "collection") {
+    calculatedCost =
+      totalArea * (config.capitalCostPerSqFt || 0) +
+      totalLineLength * (config.capitalCostPerFt || 0) +
+      totalPointCount * (config.capitalCostPerPoint || 0);
+    calculatedCapture =
+      totalArea * (config.capacityIncreasePerSqFt || 0) +
+      totalLineLength * (config.capacityIncreasePerFt || 0) +
+      totalPointCount * (config.capacityIncreasePerPoint || 0);
   }
 
   const costProgressPercent = budget > 0 ? (calculatedCost / budget) * 100 : 0;
@@ -108,9 +180,9 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       contentToRender = (
         <FeatureDetailsPage
           infrastructureType={infrastructureType}
-          onAreaCalculated={setArea}
-          onLineDimensionsCalculated={setLineLength}
-          onPointCountCalculated={setPointCount}
+          onAreaCalculated={handleAreaCalculated}
+          onLineDimensionsCalculated={handleLineLengthCalculated}
+          onPointCountCalculated={handlePointCountCalculated}
         />
       );
       break;
@@ -120,35 +192,24 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   return (
     <div className="viability-page">
-      {/* Hidden loader so that calculations run immediately */}
+      {/* Hidden loader to trigger calculations */}
       <CalculationCardsLoader
         infrastructureType={infrastructureType}
-        onAreaCalculated={setArea}
-        onLineDimensionsCalculated={setLineLength}
-        onPointCountCalculated={setPointCount}
+        onAreaCalculated={handleAreaCalculated}
+        onLineDimensionsCalculated={handleLineLengthCalculated}
+        onPointCountCalculated={handlePointCountCalculated}
       />
-
       <div className="navbar">
-        <button
-          className={`navbar-tab ${tab === "cost" ? "active-tab" : ""}`}
-          onClick={() => setTab("cost")}
-        >
+        <button className={`navbar-tab ${tab === "cost" ? "active-tab" : ""}`} onClick={() => setTab("cost")}>
           Cost
         </button>
-        <button
-          className={`navbar-tab ${tab === "capture" ? "active-tab" : ""}`}
-          onClick={() => setTab("capture")}
-        >
+        <button className={`navbar-tab ${tab === "capture" ? "active-tab" : ""}`} onClick={() => setTab("capture")}>
           Capture
         </button>
-        <button
-          className={`navbar-tab ${tab === "details" ? "active-tab" : ""}`}
-          onClick={() => setTab("details")}
-        >
+        <button className={`navbar-tab ${tab === "details" ? "active-tab" : ""}`} onClick={() => setTab("details")}>
           Details
         </button>
       </div>
-
       <div className="content-section">{contentToRender}</div>
     </div>
   );
