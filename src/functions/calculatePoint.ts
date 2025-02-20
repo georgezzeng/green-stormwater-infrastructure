@@ -26,24 +26,21 @@ async function calculatePoint(
   sketch: Sketch<Point | MultiPoint> | SketchCollection<Point | MultiPoint>,
   extraParams: DefaultExtraParams = {}
 ): Promise<PointResults> {
-  console.log("calculatePoint: Extra Params:", extraParams);
-  const allowedTypes = extraParams.geometryTypes as string[] | undefined;
+  const allowedTypes = (extraParams.geometryTypes as string[] | undefined) || ["Point", "MultiPoint"];
   let filteredSketch = sketch;
   
-  if (allowedTypes) {
-    if (sketch.type === "FeatureCollection") {
-      console.log("calculatePoint: Original feature types:", sketch.features.map((f: any) => f.geometry.type));
-      filteredSketch = {
-        ...sketch,
-        features: sketch.features.filter((feature: any) =>
-          allowedTypes.includes(feature.geometry.type)
-        ),
-      };
-      console.log("calculatePoint: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry.type));
-    } else {
-      if (!allowedTypes.includes(sketch.geometry.type)) {
-        throw new Error(`calculatePoint: unsupported geometry type: ${sketch.geometry.type}`);
-      }
+  if (sketch.type === "FeatureCollection") {
+    console.log("calculatePoint: Original feature types:", sketch.features.map((f: any) => f.geometry?.type));
+    filteredSketch = {
+      ...sketch,
+      features: sketch.features.filter((feature: any) =>
+        feature.geometry && allowedTypes.includes(feature.geometry.type)
+      ),
+    };
+    console.log("calculatePoint: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry?.type));
+  } else {
+    if (!allowedTypes.includes(sketch.geometry.type)) {
+      throw new Error(`calculatePoint: unsupported geometry type: ${sketch.geometry.type}`);
     }
   }
 

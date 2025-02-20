@@ -22,25 +22,22 @@ async function calculateArea(
     | SketchCollection<Polygon | MultiPolygon>,
   extraParams: DefaultExtraParams = {}
 ): Promise<AreaResults> {
-  console.log("calculateArea: Extra Params:", extraParams);
-  const allowedTypes = extraParams.geometryTypes as string[] | undefined;
-  let filteredSketch = sketch;
+  // Set default allowed types if not provided.
+  const allowedTypes = (extraParams.geometryTypes as string[] | undefined) || ["Polygon", "MultiPolygon"];
   
-  if (allowedTypes) {
-    if (sketch.type === "FeatureCollection") {
-      console.log("calculateArea: Original feature types:", sketch.features.map((f: any) => f.geometry.type));
-      filteredSketch = {
-        ...sketch,
-        features: sketch.features.filter((feature: any) =>
-          allowedTypes.includes(feature.geometry.type)
-        ),
-      };
-      console.log("calculateArea: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry.type));
-    } else {
-      // single feature case
-      if (!allowedTypes.includes(sketch.geometry.type)) {
-        throw new Error(`calculateArea: unsupported geometry type: ${sketch.geometry.type}`);
-      }
+  let filteredSketch = sketch;
+  if (sketch.type === "FeatureCollection") {
+    console.log("calculateArea: Original feature types:", sketch.features.map((f: any) => f.geometry?.type));
+    filteredSketch = {
+      ...sketch,
+      features: sketch.features.filter((feature: any) =>
+        feature.geometry && allowedTypes.includes(feature.geometry.type)
+      ),
+    };
+    console.log("calculateArea: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry?.type));
+  } else {
+    if (!allowedTypes.includes(sketch.geometry.type)) {
+      throw new Error(`calculateArea: unsupported geometry type: ${sketch.geometry.type}`);
     }
   }
 
@@ -50,14 +47,10 @@ async function calculateArea(
   });
 
   const splitSketch = splitSketchAntimeridian(filteredSketch);
-
   const clippedSketch = await clipToGeography(splitSketch, curGeography);
-
   const areaInSquareFeet = turfArea(clippedSketch) * 10.7639;
 
-  return {
-    area: areaInSquareFeet,
-  };
+  return { area: areaInSquareFeet };
 }
 
 export default new GeoprocessingHandler(calculateArea, {

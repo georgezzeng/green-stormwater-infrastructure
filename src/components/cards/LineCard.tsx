@@ -9,7 +9,7 @@ const NumberFormatter = new Intl.NumberFormat("en", { style: "decimal" });
 
 interface LineCardProps {
   onLineDimensionsCalculated: (length: number) => void;
-  extraParams?: any; 
+  extraParams?: any;
 }
 
 export const LineCard: React.FC<LineCardProps> = ({ onLineDimensionsCalculated, extraParams }) => {
@@ -24,7 +24,7 @@ export const LineCard: React.FC<LineCardProps> = ({ onLineDimensionsCalculated, 
     >
       {(data: LengthResults) => {
         const length = roundDecimal(data.length, 2);
-        console.log(length);
+        console.log("Calculated line length:", length);
         onLineDimensionsCalculated(length);
         return (
           <p>

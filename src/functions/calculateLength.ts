@@ -15,24 +15,21 @@ async function calculateLength(
   sketch: Sketch<LineString | MultiLineString> | SketchCollection<LineString | MultiLineString>,
   extraParams: DefaultExtraParams = {}
 ): Promise<LengthResults> {
-  console.log("calculateLength: Extra Params:", extraParams);
-  const allowedTypes = extraParams.geometryTypes as string[] | undefined;
+  const allowedTypes = (extraParams.geometryTypes as string[] | undefined) || ["LineString", "MultiLineString"];
   let filteredSketch = sketch;
   
-  if (allowedTypes) {
-    if (sketch.type === "FeatureCollection") {
-      console.log("calculateLength: Original feature types:", sketch.features.map((f: any) => f.geometry.type));
-      filteredSketch = {
-        ...sketch,
-        features: sketch.features.filter((feature: any) =>
-          allowedTypes.includes(feature.geometry.type)
-        ),
-      };
-      console.log("calculateLength: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry.type));
-    } else {
-      if (!allowedTypes.includes(sketch.geometry.type)) {
-        throw new Error(`calculateLength: unsupported geometry type: ${sketch.geometry.type}`);
-      }
+  if (sketch.type === "FeatureCollection") {
+    console.log("calculateLength: Original feature types:", sketch.features.map((f: any) => f.geometry?.type));
+    filteredSketch = {
+      ...sketch,
+      features: sketch.features.filter((feature: any) =>
+        feature.geometry && allowedTypes.includes(feature.geometry.type)
+      ),
+    };
+    console.log("calculateLength: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry?.type));
+  } else {
+    if (!allowedTypes.includes(sketch.geometry.type)) {
+      throw new Error(`calculateLength: unsupported geometry type: ${sketch.geometry.type}`);
     }
   }
   

@@ -25,18 +25,16 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
         {(data: AreaResults) => {
           console.log("Data from calculateArea:", data);
           const area = roundDecimal(data.area, 2);
-          console.log(area);
+          console.log("Calculated area:", area);
           onAreaCalculated(area);
           
           return (
-            <>
-              <p>
-                📏
-                <Trans i18nKey="AreaCard sketch size message">
-                  This sketch covers <b>{{ area: Number.format(area) }}</b> square feet.
-                </Trans>
-              </p>
-            </>
+            <p>
+              📏{" "}
+              <Trans i18nKey="AreaCard sketch size message">
+                This sketch covers <b>{{ area: Number.format(area) }}</b> square feet.
+              </Trans>
+            </p>
           );
         }}
       </ResultsCard>

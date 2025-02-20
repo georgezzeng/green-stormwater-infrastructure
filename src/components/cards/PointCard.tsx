@@ -17,22 +17,20 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
       <ResultsCard 
         title={titleTrans} 
         functionName="calculatePoint"
-        extraParams={{ geometryTypes: ["Point"] }}
+        extraParams={{ geometryTypes: ["Point", "MultiPoint"] }}
       >
         {(data: PointResults) => {
           const count = data.count;
-          console.log(count);
+          console.log("Calculated point count:", count);
           onPointCountCalculated(count);
 
           return (
-            <>
-              <p>
-                📍
-                <Trans i18nKey="PointCard sketch size message" values={{ count }}>
-                  This sketch contains <b>{{ count }}</b> points.
-                </Trans>
-              </p>
-            </>
+            <p>
+              📍{" "}
+              <Trans i18nKey="PointCard sketch size message" values={{ count }}>
+                This sketch contains <b>{{ count }}</b> points.
+              </Trans>
+            </p>
           );
         }}
       </ResultsCard>
