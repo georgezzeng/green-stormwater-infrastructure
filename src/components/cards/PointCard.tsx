@@ -14,23 +14,29 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
 
   return (
     <>
-      <ResultsCard 
-        title={titleTrans} 
+      <ResultsCard
+        title={titleTrans}
         functionName="calculatePoint"
         extraParams={{ geometryTypes: ["Point", "MultiPoint"] }}
       >
         {(data: PointResults) => {
-          const count = data.count;
-          console.log("Calculated point count:", count);
-          onPointCountCalculated(count);
-
+          const totalCount = data.count;
+          onPointCountCalculated(totalCount);
           return (
-            <p>
-              📍{" "}
-              <Trans i18nKey="PointCard sketch size message" values={{ count }}>
-                This sketch contains <b>{{ count }}</b> points.
-              </Trans>
-            </p>
+            <div>
+              <p>
+                📍 Total Points: <b>{totalCount}</b>
+              </p>
+              {data.breakdown && data.breakdown.length > 0 && (
+                <ul>
+                  {data.breakdown.map((cnt, index) => (
+                    <li key={index}>
+                      Point Group {index + 1}: {cnt} points
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           );
         }}
       </ResultsCard>

@@ -5,7 +5,7 @@ import { AreaResults } from "../../functions/calculateArea.ts";
 import Translator from "../TranslatorAsync.tsx";
 import { roundDecimal } from "@seasketch/geoprocessing/client-core";
 
-const Number = new Intl.NumberFormat("en", { style: "decimal" });
+const NumberFormatter = new Intl.NumberFormat("en", { style: "decimal" });
 
 interface AreaCardProps {
   onAreaCalculated: (area: number) => void;
@@ -17,24 +17,32 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
 
   return (
     <>
-      <ResultsCard 
-        title={titleTrans} 
-        functionName="calculateArea" 
+      <ResultsCard
+        title={titleTrans}
+        functionName="calculateArea"
         extraParams={{ geometryTypes: ["Polygon", "MultiPolygon"] }}
       >
         {(data: AreaResults) => {
           console.log("Data from calculateArea:", data);
-          const area = roundDecimal(data.area, 2);
-          console.log("Calculated area:", area);
-          onAreaCalculated(area);
-          
+          const totalArea = roundDecimal(data.area, 2);
+          onAreaCalculated(totalArea);
           return (
-            <p>
-              📏{" "}
-              <Trans i18nKey="AreaCard sketch size message">
-                This sketch covers <b>{{ area: Number.format(area) }}</b> square feet.
-              </Trans>
-            </p>
+            <div>
+              <p>
+                📏 Total Area:{" "}
+                <b>{NumberFormatter.format(totalArea)}</b> square feet.
+              </p>
+              {data.breakdown && data.breakdown.length > 0 && (
+                <ul>
+                  {data.breakdown.map((a, index) => (
+                    <li key={index}>
+                      Polygon {index + 1}:{" "}
+                      {NumberFormatter.format(roundDecimal(a, 2))} sq ft
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           );
         }}
       </ResultsCard>
@@ -45,7 +53,7 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
 export const AreaCardReportClient = () => {
   return (
     <Translator>
-      <AreaCard onAreaCalculated={() => {}} /> 
+      <AreaCard onAreaCalculated={() => {}} />
     </Translator>
   );
 };
