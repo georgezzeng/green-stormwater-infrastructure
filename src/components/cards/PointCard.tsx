@@ -25,35 +25,8 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
         return (
           <div>
             <p>
-              📍 Total Points: <b>{totalCount}</b> ...
+              📍 Total Points: <b>{totalCount}</b>
             </p>
-            {data.breakdown && Object.keys(data.breakdown).length > 0 && (
-              <>
-                <h4>Counts by Geometry:</h4>
-                <ul>
-                  {Object.entries(data.breakdown).map(([geomType, count]) => (
-                    <li key={geomType}>
-                      {geomType}: {count} {count === 1 ? "sketch" : "sketches"}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-            {data.details && Object.keys(data.details).length > 0 && (
-              <>
-                <h4>Individual Counts:</h4>
-                {Object.entries(data.details).map(([geomType, counts]) => (
-                  <div key={geomType}>
-                    <strong>{geomType}:</strong>
-                    <ul>
-                      {counts.map((c, i) => (
-                        <li key={i}>{c}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </>
-            )}
           </div>
         );
       }}

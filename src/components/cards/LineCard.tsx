@@ -29,29 +29,24 @@ export const LineCard: React.FC<LineCardProps> = ({
       {(data: LengthResults) => {
         const totalLength = roundDecimal(data.length, 2);
         onLineDimensionsCalculated(totalLength);
+        // Calculate total count from breakdown
+        const totalCount = Object.values(data.breakdown).reduce(
+          (sum, count) => sum + count,
+          0
+        );
         return (
           <div>
             <p>
+              There are <b>{totalCount}</b> lines in total.
+            </p>
+            <p>
               📏 Total Line Length: <b>{NumberFormatter.format(totalLength)}</b> feet.
             </p>
-            {data.breakdown && Object.keys(data.breakdown).length > 0 && (
-              <>
-                <h4>Counts by Geometry:</h4>
-                <ul>
-                  {Object.entries(data.breakdown).map(([geomType, count]) => (
-                    <li key={geomType}>
-                      {geomType}: {count} {count === 1 ? "sketch" : "sketches"}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
             {data.details && Object.keys(data.details).length > 0 && (
               <>
                 <h4>Individual Lengths (ft):</h4>
                 {Object.entries(data.details).map(([geomType, lengths]) => (
                   <div key={geomType}>
-                    <strong>{geomType}:</strong>
                     <ul>
                       {lengths.map((l, i) => (
                         <li key={i}>{NumberFormatter.format(roundDecimal(l, 2))}</li>
