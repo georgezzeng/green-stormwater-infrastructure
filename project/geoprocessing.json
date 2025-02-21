@@ -122,6 +122,7 @@
     "src/functions/calculateArea.ts",
     "src/functions/calculatePerim.ts",
     "src/functions/calculatePoint.ts",
-    "src/functions/calculateLength.ts"
+    "src/functions/calculateLength.ts",
+    "src/functions/calcCollection.ts"
   ]
 }
