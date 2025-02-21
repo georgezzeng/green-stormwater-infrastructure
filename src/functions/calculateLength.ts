@@ -23,14 +23,14 @@ async function calculateLength(
   let filteredSketch = sketch;
   
   if (sketch.type === "FeatureCollection") {
-    console.log("calculateLength: Original feature types:", sketch.features.map((f: any) => f.geometry?.type));
+    // console.log("calculateLength: Original feature types:", sketch.features.map((f: any) => f.geometry?.type));
     filteredSketch = {
       ...sketch,
       features: sketch.features.filter((feature: any) =>
         feature.geometry && allowedTypes.includes(feature.geometry.type)
       ),
     };
-    console.log("calculateLength: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry?.type));
+    // console.log("calculateLength: Filtered feature types:", filteredSketch.features.map((f: any) => f.geometry?.type));
   } else {
     if (!allowedTypes.includes(sketch.geometry.type)) {
       throw new Error(`calculateLength: unsupported geometry type: ${sketch.geometry.type}`);

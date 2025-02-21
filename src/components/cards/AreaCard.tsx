@@ -23,7 +23,7 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
       extraParams={{ geometryTypes: ["Polygon", "MultiPolygon"] }}
     >
       {(data: AreaResults) => {
-        console.log("Data from calculateArea:", data);
+        //console.log("Data from calculateArea:", data);
         const totalArea = roundDecimal(data.area, 2);
         onAreaCalculated(totalArea);
         const totalCount = Object.values(data.breakdown).reduce(
