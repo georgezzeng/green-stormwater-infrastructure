@@ -1,3 +1,4 @@
+// calculateLength.ts
 import {
   Sketch,
   SketchCollection,
@@ -6,9 +7,12 @@ import {
 } from "@seasketch/geoprocessing";
 import { length as turfLength } from "@turf/turf";
 import type { LineString, MultiLineString } from "geojson";
+import { computeGeometryCounts, computeFeatureDetails } from "./geometryUtils";
 
 export interface LengthResults {
   length: number;
+  breakdown: { [geometryType: string]: number };
+  details: { [geometryType: string]: number[] };
 }
 
 async function calculateLength(
@@ -33,10 +37,16 @@ async function calculateLength(
     }
   }
   
+  // Compute breakdown and individual line lengths
+  const breakdown = computeGeometryCounts(filteredSketch);
+  const details = computeFeatureDetails(filteredSketch, (feature) =>
+    turfLength(feature, { units: "kilometers" }) * 3280.84
+  );
+
   const lengthInKilometers = turfLength(filteredSketch, { units: "kilometers" });
   const lengthInFeet = lengthInKilometers * 3280.84;
 
-  return { length: lengthInFeet };
+  return { length: lengthInFeet, breakdown, details };
 }
 
 export default new GeoprocessingHandler(calculateLength, {

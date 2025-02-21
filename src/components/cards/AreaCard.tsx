@@ -1,3 +1,4 @@
+// AreaCard.tsx
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
@@ -16,37 +17,51 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
   const titleTrans = t("AreaCard title", "Area Report");
 
   return (
-    <>
-      <ResultsCard
-        title={titleTrans}
-        functionName="calculateArea"
-        extraParams={{ geometryTypes: ["Polygon", "MultiPolygon"] }}
-      >
-        {(data: AreaResults) => {
-          console.log("Data from calculateArea:", data);
-          const totalArea = roundDecimal(data.area, 2);
-          onAreaCalculated(totalArea);
-          return (
-            <div>
-              <p>
-                📏 Total Area:{" "}
-                <b>{NumberFormatter.format(totalArea)}</b> square feet.
-              </p>
-              {data.breakdown && data.breakdown.length > 0 && (
+    <ResultsCard
+      title={titleTrans}
+      functionName="calculateArea"
+      extraParams={{ geometryTypes: ["Polygon", "MultiPolygon"] }}
+    >
+      {(data: AreaResults) => {
+        console.log("Data from calculateArea:", data);
+        const totalArea = roundDecimal(data.area, 2);
+        onAreaCalculated(totalArea);
+        return (
+          <div>
+            <p>
+              📏 Total Area: <b>{NumberFormatter.format(totalArea)}</b> square feet.
+            </p>
+            {data.breakdown && Object.keys(data.breakdown).length > 0 && (
+              <>
+                <h4>Counts by Geometry:</h4>
                 <ul>
-                  {data.breakdown.map((a, index) => (
-                    <li key={index}>
-                      Polygon {index + 1}:{" "}
-                      {NumberFormatter.format(roundDecimal(a, 2))} sq ft
+                  {Object.entries(data.breakdown).map(([geomType, count]) => (
+                    <li key={geomType}>
+                      {geomType}: {count} {count === 1 ? "sketch" : "sketches"}
                     </li>
                   ))}
                 </ul>
-              )}
-            </div>
-          );
-        }}
-      </ResultsCard>
-    </>
+              </>
+            )}
+            {data.details && Object.keys(data.details).length > 0 && (
+              <>
+                <h4>Individual Areas (sq ft):</h4>
+                {Object.entries(data.details).map(([geomType, areas]) => (
+                  <div key={geomType}>
+                    <strong>{geomType}:</strong>
+                    <ul>
+                      {areas.map((a, i) => (
+                        <li key={i}>{NumberFormatter.format(roundDecimal(a, 2))}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        );
+      }}
+    </ResultsCard>
   );
 };
 

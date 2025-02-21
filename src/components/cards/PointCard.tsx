@@ -1,3 +1,4 @@
+// PointCard.tsx
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
@@ -13,34 +14,50 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
   const titleTrans = t("PointCard title", "Point Count Report");
 
   return (
-    <>
-      <ResultsCard
-        title={titleTrans}
-        functionName="calculatePoint"
-        extraParams={{ geometryTypes: ["Point", "MultiPoint"] }}
-      >
-        {(data: PointResults) => {
-          const totalCount = data.count;
-          onPointCountCalculated(totalCount);
-          return (
-            <div>
-              <p>
-                📍 Total Points: <b>{totalCount}</b>
-              </p>
-              {data.breakdown && data.breakdown.length > 0 && (
+    <ResultsCard
+      title={titleTrans}
+      functionName="calculatePoint"
+      extraParams={{ geometryTypes: ["Point", "MultiPoint"] }}
+    >
+      {(data: PointResults) => {
+        const totalCount = data.count;
+        onPointCountCalculated(totalCount);
+        return (
+          <div>
+            <p>
+              📍 Total Points: <b>{totalCount}</b> ...
+            </p>
+            {data.breakdown && Object.keys(data.breakdown).length > 0 && (
+              <>
+                <h4>Counts by Geometry:</h4>
                 <ul>
-                  {data.breakdown.map((cnt, index) => (
-                    <li key={index}>
-                      Point Group {index + 1}: {cnt} points
+                  {Object.entries(data.breakdown).map(([geomType, count]) => (
+                    <li key={geomType}>
+                      {geomType}: {count} {count === 1 ? "sketch" : "sketches"}
                     </li>
                   ))}
                 </ul>
-              )}
-            </div>
-          );
-        }}
-      </ResultsCard>
-    </>
+              </>
+            )}
+            {data.details && Object.keys(data.details).length > 0 && (
+              <>
+                <h4>Individual Counts:</h4>
+                {Object.entries(data.details).map(([geomType, counts]) => (
+                  <div key={geomType}>
+                    <strong>{geomType}:</strong>
+                    <ul>
+                      {counts.map((c, i) => (
+                        <li key={i}>{c}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        );
+      }}
+    </ResultsCard>
   );
 };
 

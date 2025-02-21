@@ -1,3 +1,4 @@
+// LineCard.tsx
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ResultsCard } from "@seasketch/geoprocessing/client-ui";
@@ -31,18 +32,34 @@ export const LineCard: React.FC<LineCardProps> = ({
         return (
           <div>
             <p>
-              📏 Total Line Length:{" "}
-              <b>{NumberFormatter.format(totalLength)}</b> feet.
+              📏 Total Line Length: <b>{NumberFormatter.format(totalLength)}</b> feet.
             </p>
-            {data.breakdown && data.breakdown.length > 0 && (
-              <ul>
-                {data.breakdown.map((l, index) => (
-                  <li key={index}>
-                    Line {index + 1}:{" "}
-                    {NumberFormatter.format(roundDecimal(l, 2))} ft
-                  </li>
+            {data.breakdown && Object.keys(data.breakdown).length > 0 && (
+              <>
+                <h4>Counts by Geometry:</h4>
+                <ul>
+                  {Object.entries(data.breakdown).map(([geomType, count]) => (
+                    <li key={geomType}>
+                      {geomType}: {count} {count === 1 ? "sketch" : "sketches"}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {data.details && Object.keys(data.details).length > 0 && (
+              <>
+                <h4>Individual Lengths (ft):</h4>
+                {Object.entries(data.details).map(([geomType, lengths]) => (
+                  <div key={geomType}>
+                    <strong>{geomType}:</strong>
+                    <ul>
+                      {lengths.map((l, i) => (
+                        <li key={i}>{NumberFormatter.format(roundDecimal(l, 2))}</li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </>
             )}
           </div>
         );

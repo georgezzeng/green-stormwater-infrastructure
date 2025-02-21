@@ -1,3 +1,4 @@
+// calculateArea.ts
 import {
   Sketch,
   SketchCollection,
@@ -11,15 +12,16 @@ import {
 import { area as turfArea } from "@turf/turf";
 import project from "../../project/projectClient.js";
 import { clipToGeography } from "../util/clipToGeography.js";
+import { computeGeometryCounts, computeFeatureDetails } from "./geometryUtils.ts";
 
 export interface AreaResults {
   area: number;
+  breakdown: { [geometryType: string]: number };
+  details: { [geometryType: string]: number[] };
 }
 
 async function calculateArea(
-  sketch:
-    | Sketch<Polygon | MultiPolygon>
-    | SketchCollection<Polygon | MultiPolygon>,
+  sketch: Sketch<Polygon | MultiPolygon> | SketchCollection<Polygon | MultiPolygon>,
   extraParams: DefaultExtraParams = {}
 ): Promise<AreaResults> {
   // Set default allowed types if not provided.
@@ -41,6 +43,11 @@ async function calculateArea(
     }
   }
 
+  // Compute breakdown and individual area details
+  const breakdown = computeGeometryCounts(filteredSketch);
+  // Note: we will compute individual area (in square feet) for each feature.
+  const details = computeFeatureDetails(filteredSketch, (feature) => turfArea(feature) * 10.7639);
+
   const geographyId = getFirstFromParam("geographyIds", extraParams);
   const curGeography = project.getGeographyById(geographyId, {
     fallbackGroup: "default-boundary",
@@ -48,9 +55,11 @@ async function calculateArea(
 
   const splitSketch = splitSketchAntimeridian(filteredSketch);
   const clippedSketch = await clipToGeography(splitSketch, curGeography);
+
+  // Total area computed from the entire (clipped) geometry.
   const areaInSquareFeet = turfArea(clippedSketch) * 10.7639;
 
-  return { area: areaInSquareFeet };
+  return { area: areaInSquareFeet, breakdown, details };
 }
 
 export default new GeoprocessingHandler(calculateArea, {

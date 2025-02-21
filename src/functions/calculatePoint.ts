@@ -1,3 +1,4 @@
+// calculatePoint.ts
 import {
   Sketch,
   SketchCollection,
@@ -6,9 +7,12 @@ import {
   GeoprocessingHandler,
   DefaultExtraParams,
 } from "@seasketch/geoprocessing";
+import { computeGeometryCounts, computeFeatureDetails } from "./geometryUtils";
 
 export interface PointResults {
   count: number;
+  breakdown: { [geometryType: string]: number };
+  details: { [geometryType: string]: number[] };
 }
 
 function countPointsInFeature(feature: any): number {
@@ -44,9 +48,7 @@ async function calculatePoint(
     }
   }
 
-  console.log("calculatePoint: Filtered Sketch Data Received:", JSON.stringify(filteredSketch, null, 2));
   let count = 0;
-
   if (filteredSketch.type === "FeatureCollection" || Array.isArray(filteredSketch.features)) {
     for (const feature of filteredSketch.features) {
       count += countPointsInFeature(feature);
@@ -54,8 +56,12 @@ async function calculatePoint(
   } else {
     count = countPointsInFeature(filteredSketch);
   }
+  
+  // Compute breakdown and individual point counts per feature
+  const breakdown = computeGeometryCounts(filteredSketch);
+  const details = computeFeatureDetails(filteredSketch, (feature) => countPointsInFeature(feature));
 
-  return { count };
+  return { count, breakdown, details };
 }
 
 export default new GeoprocessingHandler(calculatePoint, {
