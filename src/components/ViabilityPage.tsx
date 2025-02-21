@@ -1,11 +1,14 @@
+// ViabilityPage.tsx
 import React, { useState, useEffect } from "react";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
-import { infrastructureTypes } from "../data/infrastructureData.ts";
+import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
 import FeatureDetailsPage from "./FeatureDetailsPage.tsx";
 import GaugeChart from "./charts/GaugeChart.tsx";
 import "../styles/styles.css";
 import CaptureAnalysisPage from "./CaptureAnalysis.tsx";
 import CalculationCardsLoader from "./CalculationCardsLoader.tsx";
+import { CollectionCard } from "./cards/CollectionCard.tsx";
+import { CollectionResults } from "../functions/calculateCollection";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
@@ -14,8 +17,7 @@ interface ViabilityPageProps {
 type TabOption = "cost" | "capture" | "details";
 
 export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType }) => {
-  // Get configuration and check if we're in collection mode.
-  const config = infrastructureTypes[infrastructureType];
+  const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
   const isCollection = config.category === "collection";
 
   // Single-value states (for non-collection features)
@@ -28,12 +30,14 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const [lineLengths, setLineLengths] = useState<number[]>([]);
   const [pointCounts, setPointCounts] = useState<number[]>([]);
 
+  // New state to capture collection breakdown results
+  const [collectionResults, setCollectionResults] = useState<CollectionResults | null>(null);
+
   // Budget and capture inputs
   const [budgetInput, setBudgetInput] = useState<string>("100");
   const [rainCaptureGoalInput, setRainCaptureGoalInput] = useState<string>("100");
   const [tab, setTab] = useState<TabOption>("cost");
 
-  // Load saved budget and capture goal from localStorage.
   useEffect(() => {
     const storedBudget = localStorage.getItem("budget");
     const storedCapture = localStorage.getItem("rainCaptureGoal");
@@ -41,7 +45,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     if (storedCapture) setRainCaptureGoalInput(storedCapture);
   }, []);
 
-  // Save state changes.
   useEffect(() => {
     localStorage.setItem("budget", budgetInput);
     localStorage.setItem("rainCaptureGoal", rainCaptureGoalInput);
@@ -50,12 +53,10 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const budget = parseFloat(budgetInput) || 0;
   const rainCaptureGoal = parseFloat(rainCaptureGoalInput) || 0;
 
-  // Callback handlers with deduplication.
   const handleAreaCalculated = (newArea: number) => {
     console.log("New Area received", newArea);
     if (isCollection) {
       setPolygonAreas((prev) => {
-        // Only add if this value isn’t already the last one.
         if (prev.length > 0 && prev[prev.length - 1] === newArea) {
           return prev;
         }
@@ -92,17 +93,9 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     }
   };
 
-  // Aggregated totals.
   const totalArea = polygonAreas.reduce((sum, val) => sum + val, 0);
   const totalLineLength = lineLengths.reduce((sum, val) => sum + val, 0);
   const totalPointCount = pointCounts.reduce((sum, val) => sum + val, 0);
-
-  console.log("Polygon Areas:", polygonAreas);
-  console.log("Total Area:", totalArea);
-  console.log("Line Lengths:", lineLengths);
-  console.log("Total Line Length:", totalLineLength);
-  console.log("Point Counts:", pointCounts);
-  console.log("Total Point Count:", totalPointCount);
 
   // Estimated cost & capture calculations.
   let calculatedCost = 0;
@@ -117,15 +110,22 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   } else if (config.category === "point") {
     calculatedCost = pointCount * (config.capitalCostPerPoint || 0);
     calculatedCapture = pointCount * (config.capacityIncreasePerPoint || 0);
-  } else if (config.category === "collection") {
-    calculatedCost =
-      totalArea * (config.capitalCostPerSqFt || 0) +
-      totalLineLength * (config.capitalCostPerFt || 0) +
-      totalPointCount * (config.capitalCostPerPoint || 0);
-    calculatedCapture =
-      totalArea * (config.capacityIncreasePerSqFt || 0) +
-      totalLineLength * (config.capacityIncreasePerFt || 0) +
-      totalPointCount * (config.capacityIncreasePerPoint || 0);
+  } else if (config.category === "collection" && collectionResults) {
+    Object.entries(collectionResults.breakdown).forEach(([practiceKey, data]) => {
+      const practiceConfig = infrastructureTypes[practiceKey];
+      if (practiceConfig) {
+        if (practiceConfig.category === "polygon" && practiceConfig.capitalCostPerSqFt !== undefined) {
+          calculatedCost += data.total * practiceConfig.capitalCostPerSqFt;
+          calculatedCapture += data.total * (practiceConfig.capacityIncreasePerSqFt || 0);
+        } else if (practiceConfig.category === "line" && practiceConfig.capitalCostPerFt !== undefined) {
+          calculatedCost += data.total * practiceConfig.capitalCostPerFt;
+          calculatedCapture += data.total * (practiceConfig.capacityIncreasePerFt || 0);
+        } else if (practiceConfig.category === "point" && practiceConfig.capitalCostPerPoint !== undefined) {
+          calculatedCost += data.total * practiceConfig.capitalCostPerPoint;
+          calculatedCapture += data.total * (practiceConfig.capacityIncreasePerPoint || 0);
+        }
+      }
+    });
   }
 
   const costProgressPercent = budget > 0 ? (calculatedCost / budget) * 100 : 0;
@@ -192,7 +192,6 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   return (
     <div className="viability-page">
-      {/* Hidden loader to trigger calculations */}
       <CalculationCardsLoader
         infrastructureType={infrastructureType}
         onAreaCalculated={handleAreaCalculated}
@@ -210,7 +209,19 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
           Details
         </button>
       </div>
-      <div className="content-section">{contentToRender}</div>
+      <div className="content-section">
+        {contentToRender}
+        {isCollection && (
+          <div style={{ display: "none" }}>
+            <CollectionCard
+              onCollectionCalculated={(results: CollectionResults) => {
+                console.log("Collection breakdown:", results);
+                setCollectionResults(results);
+              }}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

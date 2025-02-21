@@ -3,6 +3,7 @@ import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructur
 import { AreaCard } from "./cards/AreaCard.tsx";
 import { LineCard } from "./cards/LineCard.tsx";
 import { PointCard } from "./cards/PointCard.tsx";
+import { CollectionCard } from "./cards/CollectionCard.tsx";
 
 interface FeatureDetailsPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
@@ -37,6 +38,7 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
   if (config.category === "collection" && sketch && sketch.features) {
     practiceBreakdown = sketch.features.reduce(
       (acc: Record<string, number>, feature: any) => {
+        // Here we use the 'practice' field if available.
         const practiceKey = feature.properties?.practice;
         if (practiceKey) {
           acc[practiceKey] = (acc[practiceKey] || 0) + 1;
@@ -54,6 +56,9 @@ const FeatureDetailsPage: React.FC<FeatureDetailsPageProps> = ({
       <div className="cards-section">
         {config.category === "collection" ? (
           <>
+            {/* Render CollectionCard for combined breakdown */}
+            <CollectionCard />
+            {/* Optionally render the individual cards if you need separate metrics */}
             {onAreaCalculated && <AreaCard onAreaCalculated={onAreaCalculated} />}
             {onLineDimensionsCalculated && (
               <LineCard onLineDimensionsCalculated={onLineDimensionsCalculated} />
