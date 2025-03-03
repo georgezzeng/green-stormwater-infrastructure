@@ -14,9 +14,9 @@
       "source": "src/clients/RainGardenReport.tsx"
     },
     {
-      "name": "PermeablePavementReport",
-      "description": "Permeable Pavement Report based on Area",
-      "source": "src/clients/PermeablePavementReport.tsx"
+      "name": "PermeablePatioReport",
+      "description": "Permeable Patio Report based on Area",
+      "source": "src/clients/PermeablePatioReport.tsx"
     },
     {
       "name": "TreeReport",
@@ -24,9 +24,94 @@
       "source": "src/clients/TreeReport.tsx"
     },
     {
-      "name": "SwaleReport",
-      "description": "Swale Report",
-      "source": "src/clients/SwaleReport.tsx"
+      "name": "BioSwalesReport",
+      "description": "Bio-Swales Report based on Length",
+      "source": "src/clients/BioSwalesReport.tsx"
+    },
+    {
+      "name": "RainBarrelReport",
+      "description": "Rain Barrel Report",
+      "source": "src/clients/RainBarrelReport.tsx"
+    },
+    {
+      "name": "CisternReport",
+      "description": "Cistern Report",
+      "source": "src/clients/CisternReport.tsx"
+    },
+    {
+      "name": "DrywellReport",
+      "description": "Drywell Report",
+      "source": "src/clients/DrywellReport.tsx"
+    },
+    {
+      "name": "PlanterBoxesReport",
+      "description": "Planter Boxes Report",
+      "source": "src/clients/PlanterBoxesReport.tsx"
+    },
+    {
+      "name": "FoundationPerimeterDrainReport",
+      "description": "Foundation/Perimeter Drain Report based on Length",
+      "source": "src/clients/FoundationPerimeterDrainReport.tsx"
+    },
+    {
+      "name": "AmendedSoilReport",
+      "description": "Amended Soil Report based on Area",
+      "source": "src/clients/AmendedSoilReport.tsx"
+    },
+    {
+      "name": "UrbanFarmingGardeningReport",
+      "description": "Urban Farming/Gardening Report based on Area",
+      "source": "src/clients/UrbanFarmingGardeningReport.tsx"
+    },
+    {
+      "name": "RaisedBedReport",
+      "description": "Raised Bed Report based on Area",
+      "source": "src/clients/RaisedBedReport.tsx"
+    },
+    {
+      "name": "VegetationFilterStripReport",
+      "description": "Vegetation Filter Strip Report based on Length",
+      "source": "src/clients/VegetationFilterStripReport.tsx"
+    },
+    {
+      "name": "NativeVegetationReport",
+      "description": "Native Vegetation Report based on Area",
+      "source": "src/clients/NativeVegetationReport.tsx"
+    },
+    {
+      "name": "ParkingLotSwalesReport",
+      "description": "Parking Lot Swales Report based on Length",
+      "source": "src/clients/ParkingLotSwalesReport.tsx"
+    },
+    {
+      "name": "RoadsideSwalesReport",
+      "description": "Roadside Swales Report based on Length",
+      "source": "src/clients/RoadsideSwalesReport.tsx"
+    },
+    {
+      "name": "PermeableParkingReport",
+      "description": "Permeable Parking Report based on Area",
+      "source": "src/clients/PermeableParkingReport.tsx"
+    },
+    {
+      "name": "PermeableSidewalksReport",
+      "description": "Permeable Sidewalks Report based on Area",
+      "source": "src/clients/PermeableSidewalksReport.tsx"
+    },
+    {
+      "name": "PermeableDrivewayReport",
+      "description": "Permeable Driveway Report based on Area",
+      "source": "src/clients/PermeableDrivewayReport.tsx"
+    },
+    {
+      "name": "PermeableStreetsReport",
+      "description": "Permeable Streets Report based on Area",
+      "source": "src/clients/PermeableStreetsReport.tsx"
+    },
+    {
+      "name": "CollectionReport",
+      "description": "Colletion Report",
+      "source": "src/clients/CollectionReport.tsx"
     }
   ],
   "preprocessingFunctions": [
@@ -35,6 +120,9 @@
   ],
   "geoprocessingFunctions": [
     "src/functions/calculateArea.ts",
-    "src/functions/calculatePerim.ts"
+    "src/functions/calculatePerim.ts",
+    "src/functions/calculatePoint.ts",
+    "src/functions/calculateLength.ts",
+    "src/functions/calcCollection.ts"
   ]
 }

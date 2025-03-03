@@ -1,3 +1,106 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  gap: 1rem;
+  background-color: #ffffff;
+  border-bottom: 2px solid #000000;
+  padding: 0.5rem 0;
+}
+
+.navbar-tab {
+  width: 120px; /* force a fixed width */
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  text-align: center;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #000000;
+  transition: all 0.3s ease;
+}
+
+.navbar-tab:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.active-tab {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+/* Input Styles */
+.styled-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #000000;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.styled-input:focus {
+  border-color: #000000;
+  outline: none;
+}
+
+.input-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1rem 0;
+}
+
+.input-group {
+  flex: 1;
+}
+
+.small-input {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Table Styles */
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.details-table caption {
+  caption-side: top;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-bottom: 0.5rem;
+}
+
+.details-table th,
+.details-table td {
+  border: 1px solid #000;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.details-table th {
+  /* background-color: #f2f2f2; */
+}
+
+/* Center the header in the details page */
+.centered-h2 {
+  text-align: center;
+}
+
+/* General Typography */
+body {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: sans-serif;
+}

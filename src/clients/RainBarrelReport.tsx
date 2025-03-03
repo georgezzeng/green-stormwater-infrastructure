@@ -1,14 +1,13 @@
-
 import React from "react";
 import Translator from "../components/TranslatorAsync.js";
 import { ViabilityPage } from "../components/ViabilityPage.tsx";
 
-export const TreesReport = () => {
+export const RainBarrelReport = () => {
   return (
     <Translator>
-      <ViabilityPage infrastructureType="trees"/>
+      <ViabilityPage infrastructureType="rainBarrel" />
     </Translator>
   );
 };
 
-export default Treeseport;
+export default RainBarrelReport;

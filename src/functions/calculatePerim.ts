@@ -13,7 +13,6 @@ import {
   import { clipToGeography } from "../util/clipToGeography.ts";
   
   export interface PerimeterResults {
-    /** perimeter of sketch in feet */
     perimeter: number;
   }
   
@@ -26,18 +25,14 @@ import {
     // console.log("Sketch Data Received:", JSON.stringify(sketch, null, 2));
   
     const geographyId = getFirstFromParam("geographyIds", extraParams);
-    // Get geography features, falling back to geography assigned to default-boundary group
     const curGeography = project.getGeographyById(geographyId, {
       fallbackGroup: "default-boundary",
     });
   
-    // Support sketches crossing antimeridian
     const splitSketch = splitSketchAntimeridian(sketch);
   
-    // Clip to portion of sketch within current geography
     const clippedSketch = await clipToGeography(splitSketch, curGeography);
-  
-    // Convert MultiPolygon or Polygon sketch to LineString for perimeter calculation
+
     let perimeterInMeters = 0;
     if (clippedSketch.geometry.type === "Polygon") {
       perimeterInMeters = turfLength(lineString(clippedSketch.geometry.coordinates[0]), { units: "meters" });
@@ -47,7 +42,6 @@ import {
       }
     }
   
-    // Convert perimeter from meters to feet (1 meter = 3.28084 feet)
     const perimeterInFeet = perimeterInMeters * 3.28084;
   
     return {

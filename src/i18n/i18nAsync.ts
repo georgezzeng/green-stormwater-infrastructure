@@ -70,9 +70,9 @@ export function createI18nAsyncInstance(
               ((await curModule()) as unknown as any).default,
             );
           } catch {
-            console.info(`Warning: failed to find base lang resource.`);
+            // console.info(`Warning: failed to find base lang resource.`);
           }
-          console.log("language baseLangResources", baseLangResources);
+          // ("language baseLangResources", baseLangResources);
 
           let langResources = {};
           if (langPath !== undefined) {
@@ -87,11 +87,11 @@ export function createI18nAsyncInstance(
                 );
               }
             } catch {
-              console.info(`Warning: failed to find lang resource.`);
+              //console.info(`Warning: failed to find lang resource.`);
             }
           }
-          console.log("language langResources", langResources);
-          console.log("language extraTerms", extraTerms);
+          // console.log("language langResources", langResources);
+          // console.log("language extraTerms", extraTerms);
 
           // Return merged translations
           if (isDefault) {

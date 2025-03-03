@@ -1,14 +1,13 @@
-
 import React from "react";
 import Translator from "../components/TranslatorAsync.js";
 import { ViabilityPage } from "../components/ViabilityPage.tsx";
 
-export const GreenRoofReport = () => {
+export const VegetationFilterStripReport = () => {
   return (
     <Translator>
-      <ViabilityPage infrastructureType="swale"/>
+      <ViabilityPage infrastructureType="vegetationFilterStrip" />
     </Translator>
   );
 };
 
-export default GreenRoofReport;
+export default VegetationFilterStripReport;
