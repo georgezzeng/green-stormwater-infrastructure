@@ -12,11 +12,13 @@ interface BreakdownBarChartProps {
       sketchNames: string[];
     };
   };
+  totalGoal: number;
 }
 
 const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
   analysisMode,
   breakdownData,
+  totalGoal
 }) => {
   const practiceNames: string[] = [];
   const practiceValues: number[] = [];
@@ -52,7 +54,10 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
       axisPointer: { type: "shadow" },
       formatter: function (params: any) {
         const param = params[0];
-        return `${param.name}: ${Math.round(param.value)}`;
+        const percentage =
+          totalGoal > 0 ? (param.value / totalGoal) * 100 : 0;
+        const label = analysisMode === "cost" ? "Budget" : "Capture Goal";
+        return `${param.name}: ${param.value.toFixed(2)}<br/>(${percentage.toFixed(2)}% of ${label})`;
       },
     },
     grid: {
@@ -66,7 +71,7 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
       data: practiceNames,
       axisLabel: {
         interval: 0,
-        rotate: 45, // Or 0 if you have room
+        rotate: 45,
       },
     },
     yAxis: {
@@ -103,8 +108,8 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
       option={option}
       style={{
         height: "600px",
-        width: "100%",     // Make it narrower
-        margin: "0 auto"  // Center the chart
+        width: "100%",    
+        margin: "0 auto"
       }}
     />
   );

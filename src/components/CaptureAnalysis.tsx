@@ -75,7 +75,7 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
         customText={`${Math.round(actualCapture)} / ${Math.round(captureGoal)} captured`} 
       />
       {Object.keys(breakdownData).length > 0 && (
-        <BreakdownBarChart analysisMode="capacity" breakdownData={breakdownData} />
+        <BreakdownBarChart analysisMode="capacity" breakdownData={breakdownData} totalGoal={captureGoal} />
       )}
     </div>
   );

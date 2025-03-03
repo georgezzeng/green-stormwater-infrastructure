@@ -145,12 +145,11 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       </div>
       <GaugeChart value={costProgressPercent} max={100} title="Budget Spent" customText={`$${Math.round(calculatedCost)} / $${Math.round(budget)} spent`} />
       {isCollection && collectionResults && (
-        <BreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} />
+        <BreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} totalGoal={budget}/>
       )}
     </div>
   );
 
-  // In the capture tab, we use a similar pattern.
   const captureContent = (
     <CaptureAnalysisPage
       budgetInput={budgetInput}
