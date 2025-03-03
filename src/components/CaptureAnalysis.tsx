@@ -1,5 +1,7 @@
+// CaptureAnalysis.tsx
 import React, { useEffect } from "react";
 import GaugeChart from "./charts/GaugeChart.tsx";
+import CollectionBreakdownBarChart from "./charts/BreakdownBarChart.tsx";
 import "../styles/styles.css";
 
 interface CaptureAnalysisProps {
@@ -8,6 +10,15 @@ interface CaptureAnalysisProps {
   rainCaptureGoalInput: string;
   setRainCaptureGoalInput: (value: string) => void;
   captureProgress: number;
+  // Optional breakdown data from the collection.
+  breakdownData?: {
+    [practiceKey: string]: {
+      count: number;
+      total: number;
+      details: number[];
+      sketchNames: string[];
+    };
+  };
 }
 
 const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
@@ -16,8 +27,8 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
   rainCaptureGoalInput,
   setRainCaptureGoalInput,
   captureProgress,
+  breakdownData = {},
 }) => {
-  // On mount, load from localStorage.
   useEffect(() => {
     const storedBudget = localStorage.getItem("budget");
     const storedCapture = localStorage.getItem("rainCaptureGoal");
@@ -25,7 +36,6 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
     if (storedCapture) setRainCaptureGoalInput(storedCapture);
   }, []);
 
-  // Save shared state when changed.
   useEffect(() => {
     localStorage.setItem("budget", budgetInput);
     localStorage.setItem("rainCaptureGoal", rainCaptureGoalInput);
@@ -56,6 +66,9 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
         </div>
       </div>
       <GaugeChart value={captureProgress} max={100} title="Capture Progress" />
+      {Object.keys(breakdownData).length > 0 && (
+        <CollectionBreakdownBarChart analysisMode="capacity" breakdownData={breakdownData} />
+      )}
     </div>
   );
 };

@@ -8,7 +8,8 @@ import "../styles/styles.css";
 import CaptureAnalysisPage from "./CaptureAnalysis.tsx";
 import CalculationCardsLoader from "./CalculationCardsLoader.tsx";
 import { CollectionCard } from "./cards/CollectionCard.tsx";
-import { CollectionResults } from "../functions/calculateCollection";
+import { CollectionResults } from "../functions/calcCollection.ts";
+import CollectionBreakdownBarChart from "./charts/BreakdownBarChart.tsx";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
@@ -20,7 +21,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
   const isCollection = config.category === "collection";
 
-  // Single-value states (for non-collection features)
+  // Single-value states (non-collection)
   const [area, setArea] = useState<number>(0);
   const [lineLength, setLineLength] = useState<number>(0);
   const [pointCount, setPointCount] = useState<number>(0);
@@ -30,10 +31,10 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const [lineLengths, setLineLengths] = useState<number[]>([]);
   const [pointCounts, setPointCounts] = useState<number[]>([]);
 
-  // New state to capture collection breakdown results
+  // State to capture collection breakdown results.
   const [collectionResults, setCollectionResults] = useState<CollectionResults | null>(null);
 
-  // Budget and capture inputs
+  // Budget and capture inputs.
   const [budgetInput, setBudgetInput] = useState<string>("100");
   const [rainCaptureGoalInput, setRainCaptureGoalInput] = useState<string>("100");
   const [tab, setTab] = useState<TabOption>("cost");
@@ -56,12 +57,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const handleAreaCalculated = (newArea: number) => {
     console.log("New Area received", newArea);
     if (isCollection) {
-      setPolygonAreas((prev) => {
-        if (prev.length > 0 && prev[prev.length - 1] === newArea) {
-          return prev;
-        }
-        return [...prev, newArea];
-      });
+      setPolygonAreas((prev) => (prev.length > 0 && prev[prev.length - 1] === newArea ? prev : [...prev, newArea]));
     } else {
       setArea(newArea);
     }
@@ -69,12 +65,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   const handleLineLengthCalculated = (newLength: number) => {
     if (isCollection) {
-      setLineLengths((prev) => {
-        if (prev.length > 0 && prev[prev.length - 1] === newLength) {
-          return prev;
-        }
-        return [...prev, newLength];
-      });
+      setLineLengths((prev) => (prev.length > 0 && prev[prev.length - 1] === newLength ? prev : [...prev, newLength]));
     } else {
       setLineLength(newLength);
     }
@@ -82,12 +73,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
 
   const handlePointCountCalculated = (newCount: number) => {
     if (isCollection) {
-      setPointCounts((prev) => {
-        if (prev.length > 0 && prev[prev.length - 1] === newCount) {
-          return prev;
-        }
-        return [...prev, newCount];
-      });
+      setPointCounts((prev) => (prev.length > 0 && prev[prev.length - 1] === newCount ? prev : [...prev, newCount]));
     } else {
       setPointCount(newCount);
     }
@@ -131,6 +117,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const costProgressPercent = budget > 0 ? (calculatedCost / budget) * 100 : 0;
   const captureProgressPercent = rainCaptureGoal > 0 ? (calculatedCapture / rainCaptureGoal) * 100 : 0;
 
+  // Cost tab content now includes the gauge and (if collection results exist) the breakdown bar chart.
   const costContent = (
     <div>
       <SketchAttributesCard autoHide />
@@ -157,7 +144,23 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
         </div>
       </div>
       <GaugeChart value={costProgressPercent} max={100} title="Budget Spent" />
+      {isCollection && collectionResults && (
+        <CollectionBreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} />
+      )}
     </div>
+  );
+
+  // In the capture tab, we use a similar pattern.
+  const captureContent = (
+    <CaptureAnalysisPage
+      budgetInput={budgetInput}
+      setBudgetInput={setBudgetInput}
+      rainCaptureGoalInput={rainCaptureGoalInput}
+      setRainCaptureGoalInput={setRainCaptureGoalInput}
+      captureProgress={captureProgressPercent}
+      // Pass the breakdown data to show the capacity comparison.
+      breakdownData={isCollection && collectionResults ? collectionResults.breakdown : {}}
+    />
   );
 
   let contentToRender;
@@ -166,15 +169,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       contentToRender = costContent;
       break;
     case "capture":
-      contentToRender = (
-        <CaptureAnalysisPage
-          budgetInput={budgetInput}
-          setBudgetInput={setBudgetInput}
-          rainCaptureGoalInput={rainCaptureGoalInput}
-          setRainCaptureGoalInput={setRainCaptureGoalInput}
-          captureProgress={captureProgressPercent}
-        />
-      );
+      contentToRender = captureContent;
       break;
     case "details":
       contentToRender = (
