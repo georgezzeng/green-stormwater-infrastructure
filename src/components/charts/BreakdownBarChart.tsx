@@ -1,9 +1,9 @@
-// CollectionBreakdownBarChart.tsx
+
 import React from "react";
 import ReactECharts from "echarts-for-react";
 import { infrastructureTypes } from "../../data/infrastructureData.ts";
 
-interface CollectionBreakdownBarChartProps {
+interface BreakdownBarChartProps {
   analysisMode: "cost" | "capacity";
   breakdownData: {
     [practiceKey: string]: {
@@ -15,7 +15,7 @@ interface CollectionBreakdownBarChartProps {
   };
 }
 
-const BreakdownBarChart: React.FC<CollectionBreakdownBarChartProps> = ({
+const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
   analysisMode,
   breakdownData,
 }) => {

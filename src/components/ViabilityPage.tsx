@@ -1,4 +1,4 @@
-// ViabilityPage.tsx
+
 import React, { useState, useEffect } from "react";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
@@ -9,7 +9,7 @@ import CaptureAnalysisPage from "./CaptureAnalysis.tsx";
 import CalculationCardsLoader from "./CalculationCardsLoader.tsx";
 import { CollectionCard } from "./cards/CollectionCard.tsx";
 import { CollectionResults } from "../functions/calcCollection.ts";
-import CollectionBreakdownBarChart from "./charts/BreakdownBarChart.tsx";
+import BreakdownBarChart from "./charts/BreakdownBarChart.tsx";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
@@ -145,7 +145,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       </div>
       <GaugeChart value={costProgressPercent} max={100} title="Budget Spent" />
       {isCollection && collectionResults && (
-        <CollectionBreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} />
+        <BreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} />
       )}
     </div>
   );

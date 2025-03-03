@@ -1,7 +1,7 @@
-// CaptureAnalysis.tsx
+
 import React, { useEffect } from "react";
 import GaugeChart from "./charts/GaugeChart.tsx";
-import CollectionBreakdownBarChart from "./charts/BreakdownBarChart.tsx";
+import BreakdownBarChart from "./charts/BreakdownBarChart.tsx";
 import "../styles/styles.css";
 
 interface CaptureAnalysisProps {
@@ -10,7 +10,6 @@ interface CaptureAnalysisProps {
   rainCaptureGoalInput: string;
   setRainCaptureGoalInput: (value: string) => void;
   captureProgress: number;
-  // Optional breakdown data from the collection.
   breakdownData?: {
     [practiceKey: string]: {
       count: number;
@@ -67,7 +66,7 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
       </div>
       <GaugeChart value={captureProgress} max={100} title="Capture Progress" />
       {Object.keys(breakdownData).length > 0 && (
-        <CollectionBreakdownBarChart analysisMode="capacity" breakdownData={breakdownData} />
+        <BreakdownBarChart analysisMode="capacity" breakdownData={breakdownData} />
       )}
     </div>
   );
