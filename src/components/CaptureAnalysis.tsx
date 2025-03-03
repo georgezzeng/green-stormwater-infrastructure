@@ -10,6 +10,8 @@ interface CaptureAnalysisProps {
   rainCaptureGoalInput: string;
   setRainCaptureGoalInput: (value: string) => void;
   captureProgress: number;
+  actualCapture: number;
+  captureGoal: number;
   breakdownData?: {
     [practiceKey: string]: {
       count: number;
@@ -25,6 +27,8 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
   setBudgetInput,
   rainCaptureGoalInput,
   setRainCaptureGoalInput,
+  actualCapture,
+  captureGoal,
   captureProgress,
   breakdownData = {},
 }) => {
@@ -64,7 +68,12 @@ const CaptureAnalysisPage: React.FC<CaptureAnalysisProps> = ({
           />
         </div>
       </div>
-      <GaugeChart value={captureProgress} max={100} title="Capture Progress" />
+      <GaugeChart 
+        value={captureProgress} 
+        max={100} 
+        title="Capture Progress" 
+        customText={`${Math.round(actualCapture)} / ${Math.round(captureGoal)} captured`} 
+      />
       {Object.keys(breakdownData).length > 0 && (
         <BreakdownBarChart analysisMode="capacity" breakdownData={breakdownData} />
       )}

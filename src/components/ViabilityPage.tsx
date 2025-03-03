@@ -143,7 +143,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
           />
         </div>
       </div>
-      <GaugeChart value={costProgressPercent} max={100} title="Budget Spent" />
+      <GaugeChart value={costProgressPercent} max={100} title="Budget Spent" customText={`$${Math.round(calculatedCost)} / $${Math.round(budget)} spent`} />
       {isCollection && collectionResults && (
         <BreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} />
       )}
@@ -158,7 +158,8 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
       rainCaptureGoalInput={rainCaptureGoalInput}
       setRainCaptureGoalInput={setRainCaptureGoalInput}
       captureProgress={captureProgressPercent}
-      // Pass the breakdown data to show the capacity comparison.
+      actualCapture={calculatedCapture}
+      captureGoal={rainCaptureGoal}
       breakdownData={isCollection && collectionResults ? collectionResults.breakdown : {}}
     />
   );

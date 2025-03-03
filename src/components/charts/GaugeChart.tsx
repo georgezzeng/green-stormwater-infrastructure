@@ -6,17 +6,18 @@ interface GaugeChartProps {
   value: number;
   max: number;
   title: string;
+  customText?: string;
 }
 
-const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title }) => {
+const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title, customText }) => {
   const option = {
     graphic: [
       {
         type: "text",
         left: "center",
-        top: "80%", // Place below the gauge
+        top: "81%", // Place below the gauge
         style: {
-          text: "My Custom Text Below the Gauge",
+          text: customText,
           fontSize: 14,
           fill: "#333", // text color
         },
