@@ -42,6 +42,7 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
 
     practiceValues.push(Number(value.toFixed(2)));
   });
+  const yAxisMax = Math.max(...practiceValues, totalGoal) * 1.1;
 
   const option = {
     title: {
@@ -76,6 +77,7 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
     },
     yAxis: {
       type: "value",
+      max: yAxisMax,
       axisLabel: { formatter: (val: number) => Math.round(val) },
     },
     dataZoom: [
@@ -104,7 +106,7 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
             width: 2,
           },
           label: {
-            formatter: () => analysisMode === "cost" ? "Budget" : "Capture Goal",
+            formatter: () => analysisMode === "cost" ? "Budget" : "Capture\nGoal",
             position: "end",
             color: "red",
           },
