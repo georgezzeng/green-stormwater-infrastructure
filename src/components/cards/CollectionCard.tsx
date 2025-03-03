@@ -29,23 +29,20 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
         const totalFormatted = roundDecimal(data.total, 2);
         return (
           <div>
-            <p>
-              <b>Total Metric:</b> {NumberFormatter.format(totalFormatted)}
-            </p>
             {Object.keys(data.breakdown).map((practiceKey) => {
               const practiceData = data.breakdown[practiceKey];
               return (
                 <div key={practiceKey} style={{ marginBottom: "1rem" }}>
                   <h4>{practiceKey}</h4>
                   <p>
-                    <b>Count:</b> {practiceData.count}
+                    Count: {practiceData.count}
                   </p>
                   <p>
-                    <b>Total:</b>{" "}
+                    Total:{" "}
                     {NumberFormatter.format(roundDecimal(practiceData.total, 2))}
                   </p>
                   <p>
-                    <b>Sketch Names:</b>{" "}
+                    Sketch Names:{" "}
                     {practiceData.sketchNames.join(", ")}
                   </p>
                   {practiceData.details.length > 0 && (
@@ -58,6 +55,7 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
                           </li>
                         ))}
                       </ul>
+                      <br></br>
                     </>
                   )}
                 </div>
