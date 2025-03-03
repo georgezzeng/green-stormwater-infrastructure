@@ -96,6 +96,19 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
           position: "top",
           formatter: (params: any) => Math.round(params.value),
         },
+        markLine: {
+          data: [{ yAxis: totalGoal }],
+          lineStyle: {
+            color: "red",
+            type: "dotted",
+            width: 2,
+          },
+          label: {
+            formatter: () => analysisMode === "cost" ? "Budget" : "Capture Goal",
+            position: "end",
+            color: "red",
+          },
+        },
         itemStyle: {
           color: "#5470C6",
         },
