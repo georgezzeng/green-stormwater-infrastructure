@@ -18,8 +18,8 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title, customText }
         top: "81%", // Place below the gauge
         style: {
           text: customText,
-          fontSize: 14,
-          fill: "#333", // text color
+          // fontSize: 14,
+          // fill: "#333", // text color
         },
       },
     ],
@@ -56,7 +56,7 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title, customText }
           length: 20,
           lineStyle: {
             color: "#999",
-            width: 4,
+            width: 1,
           },
         },
         axisLabel: {
