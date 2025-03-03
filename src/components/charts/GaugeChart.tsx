@@ -10,10 +10,24 @@ interface GaugeChartProps {
 
 const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title }) => {
   const option = {
+    graphic: [
+      {
+        type: "text",
+        left: "center",
+        top: "80%", // Place below the gauge
+        style: {
+          text: "My Custom Text Below the Gauge",
+          fontSize: 14,
+          fill: "#333", // text color
+        },
+      },
+    ],
     series: [
       {
         type: "gauge",
         startAngle: 180,
+        center: ["50%", "60%"],
+        radius: "80%",
         endAngle: 0,
         progress: {
           show: true,
@@ -51,7 +65,7 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title }) => {
         },
         detail: {
           valueAnimation: true,
-          formatter: (val: number) => `${val.toFixed(2)}%`,
+          formatter: (val: number) => `${val.toFixed(1)}%`,
           color: "auto",
           fontSize: 20,
         },
