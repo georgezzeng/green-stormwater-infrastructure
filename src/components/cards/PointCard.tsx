@@ -25,7 +25,7 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
         return (
           <div>
             <p>
-              📍 Total Points: <b>{totalCount}</b>
+              📍 Total Point(s): <b>{totalCount}</b>
             </p>
           </div>
         );

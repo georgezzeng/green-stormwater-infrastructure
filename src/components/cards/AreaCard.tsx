@@ -33,7 +33,7 @@ export const AreaCard: React.FC<AreaCardProps> = ({ onAreaCalculated }) => {
         return (
           <div>
             <p>
-              There are <b>{totalCount}</b> polygons in total.
+              There are <b>{totalCount}</b> polygon(s) in total.
             </p>
             <p>
               📏 Total Area: <b>{NumberFormatter.format(totalArea)}</b> square feet.

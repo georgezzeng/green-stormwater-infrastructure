@@ -37,10 +37,10 @@ export const LineCard: React.FC<LineCardProps> = ({
         return (
           <div>
             <p>
-              There are <b>{totalCount}</b> lines in total.
+              There are <b>{totalCount}</b> line(s) in total.
             </p>
             <p>
-              📏 Total Line Length: <b>{NumberFormatter.format(totalLength)}</b> feet.
+              📏 Total Lengths: <b>{NumberFormatter.format(totalLength)}</b> feet.
             </p>
             {data.details && Object.keys(data.details).length > 0 && (
               <>
