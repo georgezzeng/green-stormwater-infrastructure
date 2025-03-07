@@ -4,7 +4,7 @@ import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructur
 import FeatureDetailsPage from "./FeatureDetailsPage.tsx";
 import GaugeChart from "./charts/GaugeChart.tsx";
 import "../styles/styles.css";
-import CaptureAnalysisPage from "./CaptureAnalysis.tsx";
+import CaptureAnalysisPage from "./CaptureAnalysisPage.tsx";
 import CalculationCardsLoader from "./CalculationCardsLoader.tsx";
 import { CollectionCard } from "./cards/CollectionCard.tsx";
 import { CollectionResults } from "../functions/calcCollection.ts";
@@ -39,6 +39,9 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   
   // Set default tab to "capture" instead of "cost"
   const [tab, setTab] = useState<TabOption>("capture");
+
+  // State for error messages (budget)
+  const [budgetError, setBudgetError] = useState<string>("");
 
   useEffect(() => {
     const storedBudget = localStorage.getItem("budget");
@@ -118,7 +121,7 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const costProgressPercent = budget > 0 ? (calculatedCost / budget) * 100 : 0;
   const captureProgressPercent = rainCaptureGoal > 0 ? (calculatedCapture / rainCaptureGoal) * 100 : 0;
 
-  // Cost tab content now includes the gauge and (if collection results exist) the breakdown bar chart.
+  // Cost tab content only includes the budget input box.
   const costContent = (
     <div>
       <SketchAttributesCard autoHide />
@@ -127,21 +130,34 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
           <label className="input-label">Budget (USD):</label>
           <input
             type="number"
+            min="0"
+            step="0.01"
             value={budgetInput}
-            onChange={(e) => setBudgetInput(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value !== "") {
+                const numValue = parseFloat(value);
+                if (numValue < 0) {
+                  setBudgetError("Value cannot be negative");
+                } else if (value.indexOf(".") > -1) {
+                  const decimals = value.split(".")[1];
+                  if (decimals.length > 2) {
+                    setBudgetError("Only two decimals allowed");
+                  } else {
+                    setBudgetError("");
+                  }
+                } else {
+                  setBudgetError("");
+                }
+              } else {
+                setBudgetError("");
+              }
+              setBudgetInput(value);
+            }}
             placeholder="Budget"
-            className="styled-input small-input"
+            className="styled-input"
           />
-        </div>
-        <div className="input-group">
-          <label className="input-label">Rain Capture Goal (gallons):</label>
-          <input
-            type="number"
-            value={rainCaptureGoalInput}
-            onChange={(e) => setRainCaptureGoalInput(e.target.value)}
-            placeholder="Rain Capture"
-            className="styled-input small-input"
-          />
+          {budgetError && <div className="error-message" style={{ color: "red" }}>{budgetError}</div>}
         </div>
       </div>
       <GaugeChart 
