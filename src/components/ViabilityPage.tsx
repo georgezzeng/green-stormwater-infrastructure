@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { SketchAttributesCard } from "@seasketch/geoprocessing/client-ui";
 import { infrastructureTypes, InfrastructureConfig } from "../data/infrastructureData.ts";
@@ -37,7 +36,9 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   // Budget and capture inputs.
   const [budgetInput, setBudgetInput] = useState<string>("100");
   const [rainCaptureGoalInput, setRainCaptureGoalInput] = useState<string>("100");
-  const [tab, setTab] = useState<TabOption>("cost");
+  
+  // Set default tab to "capture" instead of "cost"
+  const [tab, setTab] = useState<TabOption>("capture");
 
   useEffect(() => {
     const storedBudget = localStorage.getItem("budget");
@@ -143,7 +144,12 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
           />
         </div>
       </div>
-      <GaugeChart value={costProgressPercent} max={100} title="Budget Spent" customText={`$${Math.round(calculatedCost)} / $${Math.round(budget)} spent`} />
+      <GaugeChart 
+        value={costProgressPercent} 
+        max={100} 
+        title="Budget Spent" 
+        customText={`$${Math.round(calculatedCost)} / $${Math.round(budget)} spent`} 
+      />
       {isCollection && collectionResults && (
         <BreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} totalGoal={budget}/>
       )}
@@ -194,11 +200,11 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
         onPointCountCalculated={handlePointCountCalculated}
       />
       <div className="navbar">
-        <button className={`navbar-tab ${tab === "cost" ? "active-tab" : ""}`} onClick={() => setTab("cost")}>
-          Cost
-        </button>
         <button className={`navbar-tab ${tab === "capture" ? "active-tab" : ""}`} onClick={() => setTab("capture")}>
           Capture
+        </button>
+        <button className={`navbar-tab ${tab === "cost" ? "active-tab" : ""}`} onClick={() => setTab("cost")}>
+          Cost
         </button>
         <button className={`navbar-tab ${tab === "details" ? "active-tab" : ""}`} onClick={() => setTab("details")}>
           Details
