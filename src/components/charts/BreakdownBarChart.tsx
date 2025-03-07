@@ -50,6 +50,14 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
       // subtext: 'Optional Subtitle',
       left: 'center'
     },
+    toolbox: {
+      show: true,
+      feature: {
+        mark: { show: true },
+        restore: { show: true },
+        saveAsImage: { show: true }
+      }
+    },
     tooltip: {
       trigger: "axis",
       axisPointer: { type: "shadow" },

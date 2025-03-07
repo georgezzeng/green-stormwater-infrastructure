@@ -11,6 +11,14 @@ interface GaugeChartProps {
 
 const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title, customText }) => {
   const option = {
+    toolbox: {
+      show: true,
+      feature: {
+        mark: { show: true },
+        restore: { show: true },
+        saveAsImage: { show: true }
+      }
+    },
     graphic: [
       {
         type: "text",
