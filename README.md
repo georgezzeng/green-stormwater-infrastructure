@@ -1,6 +1,6 @@
 # Green Stormwater Infrastructure Project
 
-This project is developed using the SeaSketch Geoprocessing Framework to create geoprocessing functions, report clients, and UI components.
+This project is developed using the SeaSketch Geoprocessing Framework to create geoprocessing functions, report clients, and UI components for users to analyze their sketches drawn on SeaSketch Dashboard (https://www.seasketch.org/greeninfrastructure). Users can sketch polygons, lines, points, and group them in a scenario to generate reports based on their rain capture goal and budget. 
 
 # Goals for this project
 
