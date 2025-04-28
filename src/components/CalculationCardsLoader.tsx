@@ -1,4 +1,3 @@
-// CalculationCardsLoader.tsx
 import React from "react";
 import FeatureDetailsPage from "./FeatureDetailsPage.tsx";
 

@@ -14,7 +14,6 @@ interface ItemsCountPieChartProps {
 }
 
 const ItemsCountPieChart: React.FC<ItemsCountPieChartProps> = ({ breakdownData }) => {
-  // Transform breakdownData into an array suitable for ECharts.
   const pieData = useMemo(() => {
     return Object.keys(breakdownData).map((practiceKey) => {
       const count = breakdownData[practiceKey].count;
@@ -29,7 +28,7 @@ const ItemsCountPieChart: React.FC<ItemsCountPieChartProps> = ({ breakdownData }
         formatter: '{b}: {c} items ({d}%)'
     },
     legend: {
-        type: 'scroll',  // enables scrollable legend
+        type: 'scroll',
         orient: 'horizontal',
         top: 'bottom',
     },

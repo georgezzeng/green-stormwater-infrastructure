@@ -1,4 +1,3 @@
-// src/components/charts/CaptureEfficiencyChart.tsx
 import React from "react";
 import ReactECharts from "echarts-for-react";
 import { infrastructureTypes } from "../../data/infrastructureData.ts";

@@ -1,4 +1,3 @@
-// src/components/charts/CostEfficiencyChart.tsx
 import React from "react";
 import ReactECharts from "echarts-for-react";
 import { infrastructureTypes } from "../../data/infrastructureData.ts";
@@ -16,7 +15,6 @@ const CostEfficiencyChart: React.FC<CostEfficiencyChartProps> = ({ breakdownData
   const practiceValues: number[] = [];
 
   Object.entries(breakdownData)
-    // only include items the user actually ran (total > 0)
     .filter(([_, data]) => data.total > 0)
     .forEach(([key, data]) => {
       const cfg = infrastructureTypes[key];

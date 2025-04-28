@@ -20,7 +20,6 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
   breakdownData,
   totalGoal = 0,
 }) => {
-  // ---- BOTH MODE: grouped Cost vs Capture ----
   if (analysisMode === "both") {
     const practiceNames: string[] = [];
     const costValues: number[] = [];
@@ -126,7 +125,6 @@ const BreakdownBarChart: React.FC<BreakdownBarChartProps> = ({
     return <ReactECharts option={option} style={{ height: "500px", width: "100%" }} />;
   }
 
-  // ---- SINGLE MODE (cost or capacity) ----
   const practiceNames: string[] = [];
   const practiceValues: number[] = [];
 
