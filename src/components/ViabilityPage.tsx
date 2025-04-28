@@ -9,12 +9,13 @@ import CalculationCardsLoader from "./CalculationCardsLoader.tsx";
 import { CollectionCard } from "./cards/CollectionCard.tsx";
 import { CollectionResults } from "../functions/calcCollection.ts";
 import BreakdownBarChart from "./charts/BreakdownBarChart.tsx";
+import EfficiencyAnalysisPage from "./EfficiencyAnalysisPage.tsx";
 
 interface ViabilityPageProps {
   infrastructureType: keyof typeof infrastructureTypes;
 }
 
-type TabOption = "cost" | "capture" | "details";
+type TabOption = "cost" | "capture" | "details" | "efficiency";
 
 export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType }) => {
   const config: InfrastructureConfig = infrastructureTypes[infrastructureType];
@@ -36,11 +37,11 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   // Budget and capture inputs.
   const [budgetInput, setBudgetInput] = useState<string>("100");
   const [rainCaptureGoalInput, setRainCaptureGoalInput] = useState<string>("100");
-  
-  // Set default tab to "capture" instead of "cost"
+
+  // Default to "capture" tab
   const [tab, setTab] = useState<TabOption>("capture");
 
-  // State for error messages (budget)
+  // Budget validation error
   const [budgetError, setBudgetError] = useState<string>("");
 
   useEffect(() => {
@@ -58,39 +59,43 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const budget = parseFloat(budgetInput) || 0;
   const rainCaptureGoal = parseFloat(rainCaptureGoalInput) || 0;
 
+  // Handlers for the hidden CalculationCardsLoader
   const handleAreaCalculated = (newArea: number) => {
-    console.log("New Area received", newArea);
     if (isCollection) {
-      setPolygonAreas((prev) => (prev.length > 0 && prev[prev.length - 1] === newArea ? prev : [...prev, newArea]));
+      setPolygonAreas(prev =>
+        prev.length > 0 && prev[prev.length - 1] === newArea ? prev : [...prev, newArea]
+      );
     } else {
       setArea(newArea);
     }
   };
-
   const handleLineLengthCalculated = (newLength: number) => {
     if (isCollection) {
-      setLineLengths((prev) => (prev.length > 0 && prev[prev.length - 1] === newLength ? prev : [...prev, newLength]));
+      setLineLengths(prev =>
+        prev.length > 0 && prev[prev.length - 1] === newLength ? prev : [...prev, newLength]
+      );
     } else {
       setLineLength(newLength);
     }
   };
-
   const handlePointCountCalculated = (newCount: number) => {
     if (isCollection) {
-      setPointCounts((prev) => (prev.length > 0 && prev[prev.length - 1] === newCount ? prev : [...prev, newCount]));
+      setPointCounts(prev =>
+        prev.length > 0 && prev[prev.length - 1] === newCount ? prev : [...prev, newCount]
+      );
     } else {
       setPointCount(newCount);
     }
   };
 
-  const totalArea = polygonAreas.reduce((sum, val) => sum + val, 0);
-  const totalLineLength = lineLengths.reduce((sum, val) => sum + val, 0);
-  const totalPointCount = pointCounts.reduce((sum, val) => sum + val, 0);
+  // Totals for collections
+  const totalArea = polygonAreas.reduce((sum, v) => sum + v, 0);
+  const totalLineLength = lineLengths.reduce((sum, v) => sum + v, 0);
+  const totalPointCount = pointCounts.reduce((sum, v) => sum + v, 0);
 
-  // Estimated cost & capture calculations.
+  // Calculate cost & capture
   let calculatedCost = 0;
   let calculatedCapture = 0;
-
   if (config.category === "polygon") {
     calculatedCost = area * (config.capitalCostPerSqFt || 0);
     calculatedCapture = area * (config.capacityIncreasePerSqFt || 0);
@@ -101,19 +106,18 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     calculatedCost = pointCount * (config.capitalCostPerPoint || 0);
     calculatedCapture = pointCount * (config.capacityIncreasePerPoint || 0);
   } else if (config.category === "collection" && collectionResults) {
-    Object.entries(collectionResults.breakdown).forEach(([practiceKey, data]) => {
-      const practiceConfig = infrastructureTypes[practiceKey];
-      if (practiceConfig) {
-        if (practiceConfig.category === "polygon" && practiceConfig.capitalCostPerSqFt !== undefined) {
-          calculatedCost += data.total * practiceConfig.capitalCostPerSqFt;
-          calculatedCapture += data.total * (practiceConfig.capacityIncreasePerSqFt || 0);
-        } else if (practiceConfig.category === "line" && practiceConfig.capitalCostPerFt !== undefined) {
-          calculatedCost += data.total * practiceConfig.capitalCostPerFt;
-          calculatedCapture += data.total * (practiceConfig.capacityIncreasePerFt || 0);
-        } else if (practiceConfig.category === "point" && practiceConfig.capitalCostPerPoint !== undefined) {
-          calculatedCost += data.total * practiceConfig.capitalCostPerPoint;
-          calculatedCapture += data.total * (practiceConfig.capacityIncreasePerPoint || 0);
-        }
+    Object.entries(collectionResults.breakdown).forEach(([key, data]) => {
+      const cfg = infrastructureTypes[key];
+      if (!cfg) return;
+      if (cfg.category === "polygon") {
+        calculatedCost += data.total * (cfg.capitalCostPerSqFt || 0);
+        calculatedCapture += data.total * (cfg.capacityIncreasePerSqFt || 0);
+      } else if (cfg.category === "line") {
+        calculatedCost += data.total * (cfg.capitalCostPerFt || 0);
+        calculatedCapture += data.total * (cfg.capacityIncreasePerFt || 0);
+      } else if (cfg.category === "point") {
+        calculatedCost += data.total * (cfg.capitalCostPerPoint || 0);
+        calculatedCapture += data.total * (cfg.capacityIncreasePerPoint || 0);
       }
     });
   }
@@ -121,7 +125,26 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
   const costProgressPercent = budget > 0 ? (calculatedCost / budget) * 100 : 0;
   const captureProgressPercent = rainCaptureGoal > 0 ? (calculatedCapture / rainCaptureGoal) * 100 : 0;
 
-  // Cost tab content only includes the budget input box.
+  // **Build the "breakdownData" passed into EfficiencyAnalysisPage**
+  const efficiencyBreakdown: Record<string, {
+    total: number;
+    count?: number;
+    details?: number[];
+    sketchNames?: string[];
+  }> = isCollection
+    ? collectionResults?.breakdown || {}
+    : {
+        [infrastructureType]: {
+          total:
+            config.category === "polygon"
+              ? area
+              : config.category === "line"
+              ? lineLength
+              : pointCount,
+        },
+      };
+
+  // --- Tab contents ---
   const costContent = (
     <div>
       <SketchAttributesCard autoHide />
@@ -133,41 +156,37 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
             min="0"
             step="0.01"
             value={budgetInput}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (value !== "") {
-                const numValue = parseFloat(value);
-                if (numValue < 0) {
-                  setBudgetError("Value cannot be negative");
-                } else if (value.indexOf(".") > -1) {
-                  const decimals = value.split(".")[1];
-                  if (decimals.length > 2) {
-                    setBudgetError("Only two decimals allowed");
-                  } else {
-                    setBudgetError("");
-                  }
-                } else {
-                  setBudgetError("");
-                }
+            onChange={e => {
+              const v = e.target.value;
+              if (v !== "") {
+                const n = parseFloat(v);
+                if (n < 0) setBudgetError("Value cannot be negative");
+                else if (v.includes(".") && v.split(".")[1].length > 2)
+                  setBudgetError("Only two decimals allowed");
+                else setBudgetError("");
               } else {
                 setBudgetError("");
               }
-              setBudgetInput(value);
+              setBudgetInput(v);
             }}
             placeholder="Budget"
             className="styled-input"
           />
-          {budgetError && <div className="error-message" style={{ color: "red" }}>{budgetError}</div>}
+          {budgetError && <div className="error-message">{budgetError}</div>}
         </div>
       </div>
-      <GaugeChart 
-        value={costProgressPercent} 
-        max={100} 
-        title="Budget Spent" 
-        customText={`$${Math.round(calculatedCost)} / $${Math.round(budget)} spent`} 
+      <GaugeChart
+        value={costProgressPercent}
+        max={100}
+        title="Budget Spent"
+        customText={`$${Math.round(calculatedCost)} / $${Math.round(budget)} spent`}
       />
       {isCollection && collectionResults && (
-        <BreakdownBarChart analysisMode="cost" breakdownData={collectionResults.breakdown} totalGoal={budget}/>
+        <BreakdownBarChart
+          analysisMode="cost"
+          breakdownData={collectionResults.breakdown}
+          totalGoal={budget}
+        />
       )}
     </div>
   );
@@ -185,26 +204,35 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
     />
   );
 
+  const detailsContent = (
+    <FeatureDetailsPage
+      infrastructureType={infrastructureType}
+      onAreaCalculated={handleAreaCalculated}
+      onLineDimensionsCalculated={handleLineLengthCalculated}
+      onPointCountCalculated={handlePointCountCalculated}
+    />
+  );
+
+  const efficiencyContent = (
+    <EfficiencyAnalysisPage breakdownData={efficiencyBreakdown} />
+  );
+
   let contentToRender;
   switch (tab) {
-    case "cost":
-      contentToRender = costContent;
-      break;
     case "capture":
       contentToRender = captureContent;
       break;
+    case "cost":
+      contentToRender = costContent;
+      break;
     case "details":
-      contentToRender = (
-        <FeatureDetailsPage
-          infrastructureType={infrastructureType}
-          onAreaCalculated={handleAreaCalculated}
-          onLineDimensionsCalculated={handleLineLengthCalculated}
-          onPointCountCalculated={handlePointCountCalculated}
-        />
-      );
+      contentToRender = detailsContent;
+      break;
+    case "efficiency":
+      contentToRender = efficiencyContent;
       break;
     default:
-      contentToRender = costContent;
+      contentToRender = captureContent;
   }
 
   return (
@@ -216,29 +244,39 @@ export const ViabilityPage: React.FC<ViabilityPageProps> = ({ infrastructureType
         onPointCountCalculated={handlePointCountCalculated}
       />
       <div className="navbar">
-        <button className={`navbar-tab ${tab === "capture" ? "active-tab" : ""}`} onClick={() => setTab("capture")}>
+        <button
+          className={`navbar-tab ${tab === "capture" ? "active-tab" : ""}`}
+          onClick={() => setTab("capture")}
+        >
           Capture
         </button>
-        <button className={`navbar-tab ${tab === "cost" ? "active-tab" : ""}`} onClick={() => setTab("cost")}>
+        <button
+          className={`navbar-tab ${tab === "cost" ? "active-tab" : ""}`}
+          onClick={() => setTab("cost")}
+        >
           Cost
         </button>
-        <button className={`navbar-tab ${tab === "details" ? "active-tab" : ""}`} onClick={() => setTab("details")}>
+        <button
+          className={`navbar-tab ${tab === "details" ? "active-tab" : ""}`}
+          onClick={() => setTab("details")}
+        >
           Details
         </button>
+        <button
+          className={`navbar-tab ${tab === "efficiency" ? "active-tab" : ""}`}
+          onClick={() => setTab("efficiency")}
+        >
+          Efficiency
+        </button>
       </div>
-      <div className="content-section">
-        {contentToRender}
-        {isCollection && (
-          <div style={{ display: "none" }}>
-            <CollectionCard
-              onCollectionCalculated={(results: CollectionResults) => {
-                console.log("Collection breakdown:", results);
-                setCollectionResults(results);
-              }}
-            />
-          </div>
-        )}
-      </div>
+      <div className="content-section">{contentToRender}</div>
+      {isCollection && (
+        <div style={{ display: "none" }}>
+          <CollectionCard
+            onCollectionCalculated={setCollectionResults}
+          />
+        </div>
+      )}
     </div>
   );
 };
