@@ -11,7 +11,7 @@ interface PointCardProps {
 
 export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) => {
   const { t } = useTranslation();
-  const titleTrans = t("PointCard title", "Point Count Report");
+  const titleTrans = t("PointCard title", "Point Report");
 
   return (
     <ResultsCard
@@ -25,7 +25,7 @@ export const PointCard: React.FC<PointCardProps> = ({ onPointCountCalculated }) 
         return (
           <div>
             <p>
-              📍 Total Points: <b>{totalCount}</b>
+              📍 Total Point(s): <b>{totalCount}</b>
             </p>
           </div>
         );

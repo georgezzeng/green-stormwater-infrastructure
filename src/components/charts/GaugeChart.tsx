@@ -1,5 +1,4 @@
-// GaugeChart.tsx
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ReactECharts from "echarts-for-react";
 
 interface GaugeChartProps {
@@ -10,16 +9,24 @@ interface GaugeChartProps {
 }
 
 const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title, customText }) => {
+  const chartRef = useRef<ReactECharts>(null);
+
   const option = {
+    toolbox: {
+      show: true,
+      feature: {
+        mark: { show: true },
+        restore: { show: true },
+        saveAsImage: { show: true },
+      },
+    },
     graphic: [
       {
         type: "text",
         left: "center",
-        top: "81%", // Place below the gauge
+        top: "81%",
         style: {
           text: customText,
-          // fontSize: 14,
-          // fill: "#333", // text color
         },
       },
     ],
@@ -81,7 +88,29 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, title, customText }
     ],
   };
 
-  return <ReactECharts option={option} style={{ height: "300px", width: "100%" }} />;
+  useEffect(() => {
+    const chartInstance = chartRef.current?.getEchartsInstance();
+    if (chartInstance) {
+      chartInstance.showLoading({
+        text: "Loading...",
+        color: "#c23531",
+        textColor: "#000",
+        maskColor: "rgba(255, 255, 255, 0.8)",
+      });
+
+      setTimeout(() => {
+        chartInstance.hideLoading();
+      }, 1000);
+    }
+  }, [value, max, title, customText]);
+
+  return (
+    <ReactECharts
+      ref={chartRef}
+      option={option}
+      style={{ height: "300px", width: "100%" }}
+    />
+  );
 };
 
 export default GaugeChart;
